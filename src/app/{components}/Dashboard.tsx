@@ -5,7 +5,7 @@ import Tail from "./Tail";
 
 const Dashboard = () => {
   return (
-    <div className="">
+    <div className="overflow-x-hidden">
       <HeadNav />
       <Main />
       <Tail />

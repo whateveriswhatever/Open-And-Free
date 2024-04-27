@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 const Tail = () => {
   return (
@@ -90,6 +91,11 @@ type TrackType = {
   // key: Number | any;
   trackName: String;
   trackGenre: String;
+  // trackImg: {
+  //   src: String;
+  //   width: Number;
+  //   height: Number;
+  // };
   trackImg: String;
 };
 
@@ -107,6 +113,11 @@ const TrendingTrackList: React.FC = () => {
           trackImg={
             "https://th.bing.com/th/id/R.f0cb1f0e23d4997798f341fc61e93d8d?rik=TGlEPeAGqIFVCQ&riu=http%3a%2f%2finmusiccd.com%2fuploads%2fposts%2f2018-10%2f1540747912_00-va-funky_disco_house_grooves_vol_13-2018.jpg&ehk=9YjHHLUwJzBvsHiVLoDruk5HuIA6TneCpgQBjcEp0TI%3d&risl=&pid=ImgRaw&r=0"
           }
+          // trackImg={{
+          //   src: "https://th.bing.com/th/id/R.f0cb1f0e23d4997798f341fc61e93d8d?rik=TGlEPeAGqIFVCQ&riu=http%3a%2f%2finmusiccd.com%2fuploads%2fposts%2f2018-10%2f1540747912_00-va-funky_disco_house_grooves_vol_13-2018.jpg&ehk=9YjHHLUwJzBvsHiVLoDruk5HuIA6TneCpgQBjcEp0TI%3d&risl=&pid=ImgRaw&r=0",
+          //   width: 120,
+          //   height: 120,
+          // }}
         />
 
         <Track
@@ -161,6 +172,13 @@ const Track: React.FC<TrackType> = ({ trackName, trackGenre, trackImg }) => {
             height="120px"
             className={`rounded-3xl phone:w-[50px] desktop:w-[120px] phone:h-[50px] desktop:h-[120px]`}
           />
+          {/* <Image
+            src={`${trackImg}`}
+            alt="Track's image"
+            width={120}
+            height={120}
+            className={`rounded-3xl phone:w-[50px] desktop:w-[120px] phone:h-[50px] desktop:h-[120px]`}
+          /> */}
         </div>
         <div
           id="track_name"
