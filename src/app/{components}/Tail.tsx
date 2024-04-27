@@ -4,7 +4,10 @@ const Tail = () => {
   return (
     <div className="w-full phone:mt-[2rem]">
       <TailNav />
-      <TrendingTrackList />
+      {/* <TrendingTrackList /> */}
+      <div className="w-full flex justify-center">
+        <TrendingTrackList />
+      </div>
     </div>
   );
 };
@@ -23,14 +26,14 @@ const TailNav: React.FC = () => {
       className="w-full flex flex-row justify-around"
     >
       <div
-        className="text-pink-800  font-bold dekstop:text-[10px]"
-        style={{ fontSize: "1.2rem" }}
+        className="text-pink-800  font-bold dekstop:text-[2rem] phone:text-[1rem]"
+        // style={{ fontSize: "1.2rem" }}
       >
         Trending packs
       </div>
       <div className="inline-block">
         <span>
-          View more
+          <p className="desktop:text-[1rem] phone:text-[0.9rem]">View more</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -95,8 +98,8 @@ const TrendingTrackList: React.FC = () => {
     <>
       <div
         id="trending_track_list"
-        className="w-full flex flex-row justify-center"
-        style={{ justifyContent: "space-evenly" }}
+        className="w-full flex flex-row justify-center desktop:gap-[3rem] phone:gap-[0.2rem] phone:mt-[3rem]"
+        // style={{ justifyContent: "space-evenly" }}
       >
         <Track
           trackName="House Grooves"
@@ -150,23 +153,30 @@ const Track: React.FC<TrackType> = ({ trackName, trackGenre, trackImg }) => {
   return (
     <>
       <div>
-        <div id="track_img flex flex-col justify-center">
+        <div id={`track_img`}>
           <img
             src={`${trackImg}`}
             alt="Track's image"
             width="120px"
             height="120px"
-            className="rounded-3xl"
+            className={`rounded-3xl phone:w-[50px] desktop:w-[120px] phone:h-[50px] desktop:h-[120px]`}
           />
         </div>
         <div
           id="track_name"
-          className="desktop:text-[1rem] font-bold text-center"
-          style={{ fontSize: "0.9rem" }}
+          className={`desktop:text-[0.88rem] font-bold text-center ${
+            trackName.length > 15
+              ? "desktop:text-[0.8rem] phone:text-[0.6rem] desktop:w-[124px] phone:w-[70px]"
+              : "desktop:text-[0.88rem] phone:text-[0.6rem] phone:w-[50px] desktop:w-full"
+          }`}
+          // style={{ fontSize: "0.9rem", width: `${trackNameTextWidth}` }}
         >
           {trackName}
         </div>
-        <div id="track_genre" className="desktop:text-[0.8rem] text-center">
+        <div
+          id="track_genre"
+          className={`desktop:text-[0.8rem] text-center phone:text-[0.7rem]`}
+        >
           {trackGenre}
         </div>
       </div>
