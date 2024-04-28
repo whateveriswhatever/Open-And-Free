@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const page = () => {
   return (
-    <div className="w-full h-[100vw] flex flex-row overflow-hidden overflow-y-hidden">
+    <div className="w-full h-[100vw] flex flex-row desktop:overflow-hidden">
       <SignUpForm />
       {/* <SideImage /> */}
     </div>
@@ -16,15 +16,18 @@ export default page;
 
 const SignUpForm: React.FC = () => {
   return (
-    <div className="desktop:h-[40%] phone:h-[100%] phone:w-[70%]  desktop:w-[60%] flex justify-center items-center desktop:mt-[4rem]">
-      <div id="sign_up_form" className="phone:ml-[2rem] desktop:ml-[]">
+    <div className="desktop:h-[40%] phone:h-[100vw] phone:w-[70%] desktop:w-[60%] flex justify-center items-center desktop:mt-[4rem] desktop:overflow-auto phone:ml-[2rem]">
+      <div
+        id="sign_up_form"
+        className="phone:ml-[2rem] phhone:h-[100vw] desktop:mt-[4rem] phone:mt-[15rem]"
+      >
         <h2 className="desktop:text-[2rem] font-bold">Create your account</h2>
 
         <br />
 
         <div
           id="form"
-          className="flex flex-col desktop:h-[100%] desktop:gap-[1rem]"
+          className="flex flex-col desktop:h-[100%] desktop:gap-[1rem] phone:gap-[1rem]"
         >
           <RegisteredEmail />
           <RegisteredPassword />
