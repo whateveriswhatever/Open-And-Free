@@ -4,7 +4,7 @@ const LeftSideBar = () => {
   return (
     <div
       id="left_navbar"
-      className="desktop:w-[20%] desktop:h-[100%] bg-slate-200 flex flex-col justify-center text-center"
+      className="desktop:w-[15%] desktop:h-[100%] bg-slate-200 flex flex-col justify-center text-center"
     >
       <BrandIcon />
       <OptionControllers />
@@ -54,7 +54,10 @@ const OptionControllers: React.FC = () => (
 
 const MyLibrary: React.FC = () => (
   <>
-    <div id="my_library" className="flex flex-row justify-center">
+    <div
+      id="my_library"
+      className="flex flex-row justify-center hover:cursor-pointer"
+    >
       <div className="desktop:w-[20] desktop:h-[20] desktop:mr-[0.6rem]">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +71,7 @@ const MyLibrary: React.FC = () => (
         </svg>
       </div>
       <div id="content">
-        <p>My Library</p>
+        <p className="desktop:text-[1rem]">My Library</p>
       </div>
     </div>
   </>
@@ -76,7 +79,10 @@ const MyLibrary: React.FC = () => (
 
 const Samples: React.FC = () => (
   <>
-    <div id="samples" className="flex flex-row justify-center">
+    <div
+      id="samples"
+      className="flex flex-row justify-center hover:cursor-pointer"
+    >
       <div className="desktop:w-[20] desktop:h-[20] desktop:mr-[0.9rem]">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +110,10 @@ const Samples: React.FC = () => (
 
 const Stats: React.FC = () => (
   <>
-    <div id="stats" className="flex flex-row justify-center">
+    <div
+      id="stats"
+      className="flex flex-row justify-center hover:cursor-pointer"
+    >
       <div className="desktop:w-[20] desktop:h-[20] desktop:mr-[0.5rem] desktop:ml-[-1rem]">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +136,10 @@ const Stats: React.FC = () => (
 const HelpController: React.FC = () => {
   return (
     <>
-      <div id="help" className="flex flex-row justify-center">
+      <div
+        id="help"
+        className="flex flex-row justify-center hover:cursor-pointer desktop:mb-[2rem]"
+      >
         <div className="desktop:w-[20] desktop:h-[20] desktop:mr-[0.5rem] desktop:ml-[-1rem]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
