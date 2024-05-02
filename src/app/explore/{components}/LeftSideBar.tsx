@@ -44,7 +44,7 @@ const OptionControllers: React.FC = () => (
   <>
     <div
       id="option_controllers"
-      className="flex flex-col justify-around desktop:h-[6rem]"
+      className="flex flex-col justify-between desktop:h-[6rem]"
     >
       <MyLibrary />
       <Samples />
