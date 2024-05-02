@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
+import Image from "next/image";
 
 const UIController = () => {
   return (
@@ -160,8 +161,96 @@ const SongController: React.FC = () => {
               </>
             </div>
           </>
+          <br />
+          <br />
+          <>
+            <div id="songs_collection" className="w-[100%]">
+              <table className="desktop:w-[100%]">
+                <thead>
+                  <tr className="desktop:text-[0.7rem] text-slate-400">
+                    <th>Name</th>
+                    <th>Streams</th>
+                    <th>Listeners</th>
+                    <th>Saves</th>
+                    <th>Release date</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr className="text-center">
+                    <td>
+                      <Song
+                        imgSrc="https://th.bing.com/th/id/OIP.yl1i3fg_sD1sU82ZHLG7SwAAAA?rs=1&pid=ImgDetMain"
+                        artist="Lana Del Rey"
+                        songName="Summertime Sadness"
+                      />
+                    </td>
+                    <td>200K</td>
+                    <td>12M</td>
+                    <td>4M</td>
+                    <td>23/12/2006</td>
+                  </tr>
+                </tbody>
+                {/* 
+                <tr>
+                  <td>
+                    <Song
+                      imgSrc="https://th.bing.com/th/id/OIP.yl1i3fg_sD1sU82ZHLG7SwAAAA?rs=1&pid=ImgDetMain"
+                      artist="Lana Del Rey"
+                      songName="Summertime Sadness"
+                    />
+                  </td>
+                  <td>200K</td>
+                  <td>12M</td>
+                  <td>4M</td>
+                  <td>23/12/2006</td>
+                </tr> */}
+              </table>
+            </div>
+          </>
         </div>
       </>
+    </>
+  );
+};
+
+type SongType = {
+  imgSrc: string;
+  artist: string;
+  songName: string;
+};
+
+const Song: React.FC<SongType> = ({ imgSrc, artist, songName }) => {
+  return (
+    <>
+      <div id="song" className="flex justify-evenly items-center">
+        <>
+          <div id="song_image">
+            <Image
+              src={imgSrc}
+              alt="song image"
+              width={40}
+              height={40}
+              className="desktop:w-[60px] desktop:h-[60px] desktop:rounded-[1rem]"
+            />
+          </div>
+        </>
+
+        <>
+          <div
+            id="song_detail"
+            className="desktop:ml-[-3rem] min-[1350px]:ml-[-5rem] flex flex-col justify-start"
+          >
+            <div id="song_name">{songName}</div>
+            <div
+              id="song_artist"
+              className="flex desktop:text-[0.9rem] text-slate-500"
+            >
+              {artist}
+            </div>
+          </div>
+        </>
+      </div>
     </>
   );
 };
