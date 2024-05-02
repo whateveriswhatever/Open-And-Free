@@ -4,9 +4,10 @@ const LeftSideBar = () => {
   return (
     <div
       id="left_navbar"
-      className="desktop:w-[15%] desktop:h-[100%] bg-slate-200 flex flex-col justify-center text-center"
+      className="desktop:w-[15%] desktop:h-[100%] bg-zinc-100 flex flex-col justify-center text-center"
     >
       <BrandIcon />
+      <br />
       <OptionControllers />
 
       <div
@@ -28,7 +29,7 @@ const BrandIcon: React.FC = () => {
         id="brand_icon"
         className="desktop:h-[4rem] flex items-center justify-center"
       >
-        <h2>Group 3</h2>
+        <h2 className="font-bold desktop:text-[2rem]">Group 3</h2>
       </div>
     </>
   );
