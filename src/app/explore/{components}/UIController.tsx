@@ -1,4 +1,6 @@
+"use client";
 import React from "react";
+import { useState } from "react";
 
 const UIController = () => {
   return (
@@ -75,7 +77,7 @@ const SearchAndUpload: React.FC = () => {
           <>
             <div
               id="uploader"
-              className="border-[2px] rounded-[1.4rem] border-gray-200 flex flex-row justify-evenly items-center desktop:w-[38%] desktop:h-[48px]"
+              className="border-[1px] rounded-[1.4rem] border-gray-200 flex flex-row justify-evenly items-center desktop:w-[38%] desktop:h-[48px] font-bold bg-pink-200"
             >
               <div className="desktop:w-[40%] flex justify-center">
                 <svg
@@ -108,6 +110,58 @@ const UIMain: React.FC = () => (
   <>
     <div id="ui_main" className="w-[100%] desktop:h-[100%]">
       <SearchAndUpload />
+
+      <SongController />
     </div>
   </>
 );
+
+const SongController: React.FC = () => {
+  const [isClickedReleased, setIsClickedReleased] = useState(false);
+  const [isClickedUpcomming, setIsClickedUpcomming] = useState(false);
+  return (
+    <>
+      <>
+        <div id="songs_controller" className="w-[100%] desktop:mt-[2rem]">
+          <>
+            <div
+              id="released_and_upcoming"
+              className="desktop:w-[25%] flex flex-row justify-around desktop:ml-[3rem]"
+            >
+              <>
+                <div
+                  id="released"
+                  className={`${
+                    isClickedReleased
+                      ? "text-black border-b-[2px] border-pink-300"
+                      : "text-slate-400"
+                  } font-bold`}
+                  onClick={() => {
+                    setIsClickedReleased(!isClickedReleased);
+                  }}
+                >
+                  <button>Released</button>
+                </div>
+              </>
+              <>
+                <div
+                  id="upcoming"
+                  className={`${
+                    isClickedUpcomming
+                      ? "text-black border-b-[2px] border-pink-300"
+                      : "text-slate-400"
+                  } font-bold`}
+                  onClick={() => {
+                    setIsClickedUpcomming(!isClickedUpcomming);
+                  }}
+                >
+                  <button>Upcoming</button>
+                </div>
+              </>
+            </div>
+          </>
+        </div>
+      </>
+    </>
+  );
+};
