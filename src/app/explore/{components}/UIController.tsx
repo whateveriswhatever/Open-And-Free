@@ -191,6 +191,8 @@ const SongController: React.FC = () => {
                     <td>23/12/2006</td>
                   </tr>
 
+                  {/* <br /> */}
+
                   <TableRow
                     imgSrc="https://th.bing.com/th/id/OIP.jU3Rq0KBJnjBTBrLQjcNMwAAAA?rs=1&pid=ImgDetMain"
                     artist="Munn"
@@ -199,6 +201,28 @@ const SongController: React.FC = () => {
                     listenerViews="1.2M"
                     saveViews="423K"
                     releasedDate="11-11-2020"
+                  />
+
+                  {/* <br /> */}
+
+                  <TableRow
+                    imgSrc="https://i.scdn.co/image/ab67616d0000b2732abff3da1b5a18689e7a5a5b"
+                    artist="Tom Rosenthal"
+                    songName="Have We Met Before?"
+                    streamViews="230K"
+                    listenerViews="1.1M"
+                    saveViews="671K"
+                    releasedDate="01-10-2019"
+                  />
+
+                  <TableRow
+                    imgSrc="https://seeded-session-images.scdn.co/v1/img/track/1BxfuPKGuaTgP7aM0Bbdwr/en"
+                    artist="Taylor Swift"
+                    songName="Cruel Summer"
+                    streamViews="1.8M"
+                    listenerViews="2.3M"
+                    saveViews="981K"
+                    releasedDate="13-13-2021"
                   />
                 </tbody>
               </table>
@@ -229,9 +253,9 @@ type TableRowType = {
 const Song: React.FC<SongType> = ({ imgSrc, artist, songName }) => {
   return (
     <>
-      <div id="song" className="flex justify-evenly items-center">
+      <div id="song" className="flex justify-center items-center">
         <>
-          <div id="song_image">
+          <div id="song_image" className="desktop:mr-[1rem]">
             <Image
               src={imgSrc}
               alt="song image"
@@ -243,10 +267,7 @@ const Song: React.FC<SongType> = ({ imgSrc, artist, songName }) => {
         </>
 
         <>
-          <div
-            id="song_detail"
-            className="desktop:ml-[-3rem] min-[1350px]:ml-[-5rem] flex flex-col justify-start"
-          >
+          <div id="song_detail" className="flex flex-col justify-center">
             <div id="song_name">{songName}</div>
             <div
               id="song_artist"
@@ -272,6 +293,7 @@ const TableRow: React.FC<TableRowType> = ({
 }) => {
   return (
     <>
+      <br />
       <tr className="text-center">
         <td>
           <Song
