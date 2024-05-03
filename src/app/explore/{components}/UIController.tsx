@@ -190,21 +190,17 @@ const SongController: React.FC = () => {
                     <td>4M</td>
                     <td>23/12/2006</td>
                   </tr>
+
+                  <TableRow
+                    imgSrc="https://th.bing.com/th/id/OIP.jU3Rq0KBJnjBTBrLQjcNMwAAAA?rs=1&pid=ImgDetMain"
+                    artist="Munn"
+                    songName="can you hear me?"
+                    streamViews="169K"
+                    listenerViews="1.2M"
+                    saveViews="423K"
+                    releasedDate="11-11-2020"
+                  />
                 </tbody>
-                {/* 
-                <tr>
-                  <td>
-                    <Song
-                      imgSrc="https://th.bing.com/th/id/OIP.yl1i3fg_sD1sU82ZHLG7SwAAAA?rs=1&pid=ImgDetMain"
-                      artist="Lana Del Rey"
-                      songName="Summertime Sadness"
-                    />
-                  </td>
-                  <td>200K</td>
-                  <td>12M</td>
-                  <td>4M</td>
-                  <td>23/12/2006</td>
-                </tr> */}
               </table>
             </div>
           </>
@@ -218,6 +214,16 @@ type SongType = {
   imgSrc: string;
   artist: string;
   songName: string;
+};
+
+type TableRowType = {
+  imgSrc: string;
+  artist: string;
+  songName: string;
+  streamViews: string;
+  listenerViews: string;
+  saveViews: string;
+  releasedDate: string;
 };
 
 const Song: React.FC<SongType> = ({ imgSrc, artist, songName }) => {
@@ -251,6 +257,34 @@ const Song: React.FC<SongType> = ({ imgSrc, artist, songName }) => {
           </div>
         </>
       </div>
+    </>
+  );
+};
+
+const TableRow: React.FC<TableRowType> = ({
+  imgSrc,
+  artist,
+  songName,
+  streamViews,
+  listenerViews,
+  saveViews,
+  releasedDate,
+}) => {
+  return (
+    <>
+      <tr className="text-center">
+        <td>
+          <Song
+            imgSrc={`${imgSrc}`}
+            artist={`${artist}`}
+            songName={`${songName}`}
+          />
+        </td>
+        <td>{streamViews}</td>
+        <td>{listenerViews}</td>
+        <td>{saveViews}</td>
+        <td>{releasedDate}</td>
+      </tr>
     </>
   );
 };
