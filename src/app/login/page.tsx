@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   return (
@@ -32,11 +33,61 @@ const LoginForm: React.FC = () => {
 };
 
 const Form: React.FC = () => {
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
+
+  const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(`Email: ${userEmail}`);
+    console.log(`Password: ${userPassword}`);
+
+    try {
+      const response = await fetch(
+        "http://localhost/music-app-server-php/APIs/findOneDemo1.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded", // application/json
+          },
+          // body: JSON.stringify({ email: userEmail, password: userPassword }),
+          body: new URLSearchParams({
+            email: userEmail,
+            password: userPassword,
+          }).toString(),
+        }
+      );
+
+      const userData = await response.json();
+
+      if (userData["status"] === "success") {
+        // handle successful login, redirect user or save token
+        console.log(`Login successuflly !!!`);
+        // Indirect user to the dashboard
+        router.push("/");
+      } else {
+        // Depict error message
+        setErrorMessage(userData.message);
+      }
+    } catch (error) {
+      console.error(`Error loggin in ${error}`);
+      setErrorMessage("The provided user ain't exist!!! Please try again.");
+    }
+  };
+
   return (
     <>
-      <div id="form" className="desktop:mt-[2rem] phone:mt-[2rem]">
-        <LoginEmail />
-        <LoginPassword />
+      <form
+        id="form"
+        className="desktop:mt-[2rem] phone:mt-[2rem]"
+        onSubmit={handlerSubmit}
+      >
+        <LoginEmail inputEmail={userEmail} setInputEmail={setUserEmail} />
+        <LoginPassword
+          inputPassword={userPassword}
+          setInputPassword={setUserPassword}
+        />
 
         <div
           id="submit_section"
@@ -46,14 +97,17 @@ const Form: React.FC = () => {
             <p className="font-bold">Login</p>
           </button>
         </div>
-      </div>
+      </form>
 
       <ForgotPassword />
     </>
   );
 };
 
-const LoginEmail: React.FC = () => {
+const LoginEmail: React.FC<{
+  inputEmail: string;
+  setInputEmail: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ inputEmail, setInputEmail }) => {
   return (
     <>
       <div
@@ -66,14 +120,22 @@ const LoginEmail: React.FC = () => {
         <input
           type="email"
           placeholder="Login email"
+          name="email"
+          value={inputEmail}
           className="desktop:ml-[1rem] focus:outline-none"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+            setInputEmail(e.target.value)
+          }
         />
       </div>
     </>
   );
 };
 
-const LoginPassword: React.FC = () => {
+const LoginPassword: React.FC<{
+  inputPassword: string;
+  setInputPassword: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ inputPassword, setInputPassword }) => {
   const [password, setPassword] = useState("");
   const [isDisplayed, setIsDisplayed] = useState(false);
   return (
@@ -91,8 +153,11 @@ const LoginPassword: React.FC = () => {
             type={isDisplayed ? "text" : "password"}
             placeholder="Login password"
             className="desktop:ml-[1rem] focus:outline-none"
+            name="password"
+            value={inputPassword}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setPassword(e.target.value);
+              setInputPassword(e.target.value);
             }}
           />
 
