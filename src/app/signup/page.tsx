@@ -1,6 +1,7 @@
 "use client";
 import React, { SetStateAction } from "react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const page = () => {
@@ -20,7 +21,11 @@ const SignUpForm: React.FC = () => {
   const [userValidPassword, setUserValidPassword] = useState("");
   const [isUserAgreed, setIsUserAgreed] = useState(false);
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const router = useRouter();
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (
@@ -29,7 +34,7 @@ const SignUpForm: React.FC = () => {
       userValidPassword.length === 0 ||
       !isUserAgreed
     ) {
-      setIsDisabled(true);
+      setIsDisabled(false);
       console.log(`is disabled: ${isDisabled}`);
     } else if (
       userRegisteredEmail.length > 10 &&
@@ -58,8 +63,35 @@ const SignUpForm: React.FC = () => {
     console.log(`Is disabled: ${isDisabled}`);
 
     try {
-      // const response = await fetch();
-    } catch (error) {}
+      const response = await fetch(
+        "http://localhost/music-app-server-php/APIs/create.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded", // application/x-www-form-urlencoded
+          },
+          // cannot use JSON.stringify() for the body section, I don't even know why. Maybe the underlying reason is laying under the utilization of submitting data through HTML form. Ironically, I've been using this method fairly in Node.js tho.
+          body: new URLSearchParams({
+            email: userRegisteredEmail,
+            password: userRegisterdPassword,
+          }).toString(),
+        }
+      );
+
+      const responseData = await response.json();
+
+      if (responseData["status"] === "success") {
+        // handle successful registration, redirect user to the Login page or saving token if it feasible
+        console.log(`Registered successfully!`);
+        // Navigate user to the Login page
+        router.push("/login");
+      } else {
+        // Manifest error message
+        setErrorMessage(responseData.message);
+      }
+    } catch (error) {
+      console.error(`Failed in signing up ----> ${error}`);
+    }
   };
 
   return (
@@ -83,7 +115,7 @@ const SignUpForm: React.FC = () => {
               userValidPassword.length === 0 ||
               !isUserAgreed
             ) {
-              setIsDisabled(true);
+              setIsDisabled(false);
             } else {
               setIsDisabled(false);
             }
