@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const page = () => {
@@ -15,6 +15,53 @@ const page = () => {
 export default page;
 
 const SignUpForm: React.FC = () => {
+  const [userRegisteredEmail, setUserRegisteredEmail] = useState("");
+  const [userRegisterdPassword, setUserRegisteredPassword] = useState("");
+  const [userValidPassword, setUserValidPassword] = useState("");
+  const [isUserAgreed, setIsUserAgreed] = useState(false);
+
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  useEffect(() => {
+    if (
+      userRegisteredEmail.length === 0 ||
+      userRegisterdPassword.length === 0 ||
+      userValidPassword.length === 0 ||
+      !isUserAgreed
+    ) {
+      setIsDisabled(true);
+      console.log(`is disabled: ${isDisabled}`);
+    } else if (
+      userRegisteredEmail.length > 10 &&
+      userRegisterdPassword.length > 4 &&
+      userValidPassword.length === 4 &&
+      isUserAgreed &&
+      userRegisterdPassword === userValidPassword
+    ) {
+      setIsDisabled(false);
+    }
+  }, [
+    userRegisteredEmail,
+    userRegisterdPassword,
+    userValidPassword,
+    isUserAgreed,
+  ]);
+
+  const handlerSignUpFormSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    console.log(`Email: ${userRegisterdPassword}`);
+    console.log(`Password: ${userRegisterdPassword}`);
+    console.log(`Valid password: ${userValidPassword}`);
+    console.log(`Is agreed: ${isUserAgreed}`);
+    console.log(`Is disabled: ${isDisabled}`);
+
+    try {
+      // const response = await fetch();
+    } catch (error) {}
+  };
+
   return (
     <div className="desktop:h-[40%] phone:h-[100vw] phone:w-[70%] desktop:w-[60%] flex justify-center items-center desktop:mt-[4rem] desktop:overflow-auto phone:ml-[2rem]">
       <div
@@ -25,22 +72,45 @@ const SignUpForm: React.FC = () => {
 
         <br />
 
-        <div
+        <form
           id="form"
           className="flex flex-col desktop:h-[100%] desktop:gap-[1rem] phone:gap-[1rem]"
+          onSubmit={handlerSignUpFormSubmit}
+          onChange={() => {
+            if (
+              userRegisteredEmail.length === 0 ||
+              userRegisterdPassword.length === 0 ||
+              userValidPassword.length === 0 ||
+              !isUserAgreed
+            ) {
+              setIsDisabled(true);
+            } else {
+              setIsDisabled(false);
+            }
+          }}
         >
-          <RegisteredEmail />
-          <RegisteredPassword />
-          <ValidatedRegisteredPassword />
+          <RegisteredEmail
+            inputEmail={userRegisteredEmail}
+            setInputEmail={setUserRegisteredEmail}
+          />
+          <RegisteredPassword
+            inputPassword={userRegisterdPassword}
+            setInputPassword={setUserRegisteredPassword}
+          />
+          <ValidatedRegisteredPassword
+            inputValidPassword={userValidPassword}
+            setInputValidPassword={setUserValidPassword}
+            isMatched={userRegisterdPassword === userValidPassword}
+          />
 
-          <Policy />
+          <Policy isAgreed={isUserAgreed} setIsAgreed={setIsUserAgreed} />
 
           <div className="flex justify-center items-center border-[0.1rem] border-slate-400 rounded-[1rem] bg-amber-400 desktop:h-[36px]">
-            <button type="submit">
+            <button type="submit" disabled={isDisabled}>
               <p className="desktop:text-[0.8rem] font-bold">Create account</p>
             </button>
           </div>
-        </div>
+        </form>
 
         <div id="had_an_account" className="desktop:mt-[7rem]">
           <div>
@@ -57,7 +127,11 @@ const SignUpForm: React.FC = () => {
   );
 };
 
-const RegisteredEmail: React.FC = () => {
+const RegisteredEmail: React.FC<{
+  inputEmail: string;
+  setInputEmail: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ inputEmail, setInputEmail }) => {
+  // const [inputEmail, setInputEmail] = useState("");
   return (
     <>
       <div
@@ -71,13 +145,19 @@ const RegisteredEmail: React.FC = () => {
           type="email"
           placeholder="Registored email"
           className="desktop:ml-[1rem] focus:outline-none"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setInputEmail(e.target.value);
+          }}
         />
       </div>
     </>
   );
 };
 
-const RegisteredPassword: React.FC = () => {
+const RegisteredPassword: React.FC<{
+  inputPassword: string;
+  setInputPassword: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ inputPassword, setInputPassword }) => {
   const [password, setPassword] = useState("");
   const [isManifested, setIsManifested] = useState(false);
   return (
@@ -96,6 +176,7 @@ const RegisteredPassword: React.FC = () => {
             className="desktop:ml-[1rem] focus:outline-none"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setPassword(e.target.value);
+              setInputPassword(e.target.value);
               // console.log(`Password: ${password}`);
             }}
           />
@@ -127,25 +208,32 @@ const RegisteredPassword: React.FC = () => {
   );
 };
 
-const ValidatedRegisteredPassword: React.FC = () => {
+const ValidatedRegisteredPassword: React.FC<{
+  inputValidPassword: string;
+  setInputValidPassword: React.Dispatch<React.SetStateAction<string>>;
+  isMatched: boolean;
+}> = ({ inputValidPassword, setInputValidPassword, isMatched }) => {
   const [password, setPassword] = useState("");
   const [isManifested, setIsManifested] = useState(false);
   return (
     <>
       <div
         id="confirm_password"
-        className="border-slate-600 border-[0.1rem] rounded-[0.8rem]"
+        className={`${
+          !isMatched ? "border-red-600" : "border-slate-600"
+        } border-[0.1rem] rounded-[0.8rem]`}
       >
         <div className="desktop:text-[0.7rem] desktop:ml-[1rem]">
           <p>Confirm password</p>
         </div>
-        <div className="flex flex-row">
+        <div className={`flex flex-row `}>
           <input
             type={isManifested ? "text" : "password"}
             placeholder="Validate password"
-            className="desktop:ml-[1rem] focus:outline-none"
+            className={`desktop:ml-[1rem] focus:outline-none `}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setPassword(e.target.value);
+              setInputValidPassword(e.target.value);
             }}
           />
           <span
@@ -176,7 +264,10 @@ const ValidatedRegisteredPassword: React.FC = () => {
   );
 };
 
-const Policy: React.FC = () => {
+const Policy: React.FC<{
+  isAgreed: boolean;
+  setIsAgreed: React.Dispatch<SetStateAction<boolean>>;
+}> = ({ isAgreed, setIsAgreed }) => {
   return (
     <>
       {/* <div id="our_policies">
@@ -218,7 +309,13 @@ const Policy: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-row">
-        <input type="checkbox" name="agree" />
+        <input
+          type="checkbox"
+          name="agree"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setIsAgreed(e.target.checked);
+          }}
+        />
         <p className="desktop:ml-[0.6rem]">{`I totally agree with group 3's policies`}</p>
       </div>
     </>

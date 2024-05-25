@@ -65,7 +65,7 @@ const Form: React.FC = () => {
         // handle successful login, redirect user or save token
         console.log(`Login successuflly !!!`);
         // Indirect user to the dashboard
-        router.push("/");
+        router.push("/explore");
       } else {
         // Depict error message
         setErrorMessage(userData.message);
