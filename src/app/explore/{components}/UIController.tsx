@@ -2,6 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const UIController = () => {
   return (
@@ -25,14 +26,20 @@ const UIHeader: React.FC = () => (
   </>
 );
 
-const UserAccount: React.FC = () => (
-  <>
-    <div
-      id="user_account"
-      className="desktop:w-[40px] desktop:h-[40px] border-2 border-slate-400 rounded-[1.2rem] desktop:mr-[3rem]"
-    ></div>
-  </>
-);
+const UserAccount: React.FC = () => {
+  const router = useRouter();
+  return (
+    <>
+      <div
+        id="user_account"
+        className="desktop:w-[40px] desktop:h-[40px] border-2 border-slate-400 rounded-[1.2rem] desktop:mr-[3rem]"
+        onClick={() => {
+          router.push("/profile");
+        }}
+      ></div>
+    </>
+  );
+};
 
 const SearchAndUpload: React.FC = () => {
   return (

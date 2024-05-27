@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.19",
+    "firebase": "^10.12.1",
     "next": "^14.2.3",
     "nextjs-cors": "^2.2.0",
     "react": "^18",
