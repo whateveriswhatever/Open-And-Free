@@ -249,7 +249,7 @@ const SongController: React.FC<{
                   <tr className="text-center">
                     <td>
                       <Song
-                        imgSrc="https://th.bing.com/th/id/OIP.yl1i3fg_sD1sU82ZHLG7SwAAAA?rs=1&pid=ImgDetMain"
+                        // imgSrc="https://th.bing.com/th/id/OIP.yl1i3fg_sD1sU82ZHLG7SwAAAA?rs=1&pid=ImgDetMain"
                         artist="Lana Del Rey"
                         songName="Summertime Sadness"
                       />
@@ -263,7 +263,7 @@ const SongController: React.FC<{
                   {/* <br /> */}
 
                   <TableRow
-                    imgSrc="https://th.bing.com/th/id/OIP.jU3Rq0KBJnjBTBrLQjcNMwAAAA?rs=1&pid=ImgDetMain"
+                    // imgSrc="https://th.bing.com/th/id/OIP.jU3Rq0KBJnjBTBrLQjcNMwAAAA?rs=1&pid=ImgDetMain"
                     artist="Munn"
                     songName="can you hear me?"
                     streamViews="169K"
@@ -275,7 +275,7 @@ const SongController: React.FC<{
                   {/* <br /> */}
 
                   <TableRow
-                    imgSrc="https://i.scdn.co/image/ab67616d0000b2732abff3da1b5a18689e7a5a5b"
+                    // imgSrc="https://i.scdn.co/image/ab67616d0000b2732abff3da1b5a18689e7a5a5b"
                     artist="Tom Rosenthal"
                     songName="Have We Met Before?"
                     streamViews="230K"
@@ -285,7 +285,7 @@ const SongController: React.FC<{
                   />
 
                   <TableRow
-                    imgSrc="https://seeded-session-images.scdn.co/v1/img/track/1BxfuPKGuaTgP7aM0Bbdwr/en"
+                    // imgSrc="https://seeded-session-images.scdn.co/v1/img/track/1BxfuPKGuaTgP7aM0Bbdwr/en"
                     artist="Taylor Swift"
                     songName="Cruel Summer"
                     streamViews="1.8M"
@@ -304,13 +304,13 @@ const SongController: React.FC<{
 };
 
 type SongType = {
-  imgSrc: string;
+  // imgSrc: string;
   artist: string;
   songName: string;
 };
 
 type TableRowType = {
-  imgSrc: string;
+  // imgSrc: string;
   artist: string;
   songName: string;
   streamViews: string;
@@ -319,19 +319,19 @@ type TableRowType = {
   releasedDate: string;
 };
 
-const Song: React.FC<SongType> = ({ imgSrc, artist, songName }) => {
+const Song: React.FC<SongType> = ({ artist, songName }) => {
   return (
     <>
       <div id="song" className="flex justify-center items-center">
         <>
           <div id="song_image" className="desktop:mr-[1rem]">
-            <Image
+            {/* <Image
               src={imgSrc}
               alt="song image"
               width={40}
               height={40}
               className="desktop:w-[60px] desktop:h-[60px] desktop:rounded-[1rem]"
-            />
+            /> */}
           </div>
         </>
 
@@ -352,7 +352,7 @@ const Song: React.FC<SongType> = ({ imgSrc, artist, songName }) => {
 };
 
 const TableRow: React.FC<TableRowType> = ({
-  imgSrc,
+  // imgSrc,
   artist,
   songName,
   streamViews,
@@ -366,7 +366,7 @@ const TableRow: React.FC<TableRowType> = ({
       <tr className="text-center">
         <td>
           <Song
-            imgSrc={`${imgSrc}`}
+            // imgSrc={`${imgSrc}`}
             artist={`${artist}`}
             songName={`${songName}`}
           />
