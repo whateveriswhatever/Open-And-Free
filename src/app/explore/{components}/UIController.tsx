@@ -1,8 +1,11 @@
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { musicFileDatabase } from "@/app/firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
+import AddingNewSong from "./AddingNewSong";
 
 const UIController = () => {
   return (
@@ -41,7 +44,34 @@ const UserAccount: React.FC = () => {
   );
 };
 
-const SearchAndUpload: React.FC = () => {
+const SearchAndUpload: React.FC<{
+  isOpened: boolean;
+  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  onValueChange: (newValue: boolean) => void;
+}> = ({ isOpened, setIsOpened, onValueChange }) => {
+  // const [isOpened, setIsOpened] = useState(false);
+
+  const router = useRouter();
+
+  const addNewMusicFile = async (
+    songName: string,
+    authorName: string,
+    mp3_4File: any
+  ): Promise<any> => {
+    try {
+      const docRef = await addDoc(collection(musicFileDatabase, "messages"), {
+        songName: songName,
+        authorName: authorName,
+        musicFile: mp3_4File,
+      });
+      console.log(`Document was written with ID: ${docRef.id}`);
+      return true;
+    } catch (error) {
+      console.error(`Failed when adding new docment ${error}`);
+      return false;
+    }
+  };
+
   return (
     <>
       <div
@@ -86,6 +116,12 @@ const SearchAndUpload: React.FC = () => {
             <div
               id="uploader"
               className="border-[1px] rounded-[1.4rem] border-gray-200 flex flex-row justify-evenly items-center desktop:w-[38%] desktop:h-[48px] font-bold bg-pink-200"
+              onClick={() => {
+                setIsOpened(!isOpened);
+                onValueChange(isOpened); // Updating the parent's state
+                console.log(`Is opened : ${isOpened}`);
+                router.push("/songs/upload");
+              }}
             >
               <div className="desktop:w-[40%] flex justify-center">
                 <svg
@@ -114,19 +150,41 @@ const SearchAndUpload: React.FC = () => {
   );
 };
 
-const UIMain: React.FC = () => (
-  <>
-    <div id="ui_main" className="w-[100%] desktop:h-[100%]">
-      <SearchAndUpload />
+const UIMain: React.FC = () => {
+  const [isAddingNewSongWindowOpened, setIsAddingNewSongWindowOpened] =
+    useState(false);
 
-      <SongController />
-    </div>
-  </>
-);
+  useEffect(() => {
+    console.log(`isAddingNewSongWindowOpened : ${isAddingNewSongWindowOpened}`);
+  }, [isAddingNewSongWindowOpened]);
 
-const SongController: React.FC = () => {
+  return (
+    <>
+      <div id="ui_main" className="w-[100%] desktop:h-[100%]">
+        <SearchAndUpload
+          isOpened={isAddingNewSongWindowOpened}
+          setIsOpened={setIsAddingNewSongWindowOpened}
+          onValueChange={(newValue: boolean) =>
+            setIsAddingNewSongWindowOpened(newValue)
+          }
+        />
+        {isAddingNewSongWindowOpened ? <div>Hello</div> : <></>}
+        <SongController
+          isTheAddingWindowOpening={isAddingNewSongWindowOpened}
+          // setIsAddingNewSongWindowOpened={setIsAddingNewSongWindowOpened}
+        />
+      </div>
+    </>
+  );
+};
+
+const SongController: React.FC<{
+  isTheAddingWindowOpening: boolean;
+}> = ({ isTheAddingWindowOpening }) => {
   const [isClickedReleased, setIsClickedReleased] = useState(false);
   const [isClickedUpcomming, setIsClickedUpcomming] = useState(false);
+  // const [isTheAddingWindowOpeneing, setIsAddingNewSongWindowOpened] = useState(false);
+
   return (
     <>
       <>
@@ -146,6 +204,9 @@ const SongController: React.FC = () => {
                   } font-bold`}
                   onClick={() => {
                     setIsClickedReleased(!isClickedReleased);
+                    // console.log(
+                    //   `isTheAddingNewSongWindowOpened: ${isTheAddingWindowOpening}`
+                    // );
                   }}
                 >
                   <button>Released</button>
@@ -170,6 +231,7 @@ const SongController: React.FC = () => {
           </>
           <br />
           <br />
+          {isTheAddingWindowOpening ? <div>Hello</div> : <></>}
           <>
             <div id="songs_collection" className="w-[100%]">
               <table className="desktop:w-[100%]">
