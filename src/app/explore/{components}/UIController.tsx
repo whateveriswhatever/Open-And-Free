@@ -6,12 +6,15 @@ import { useRouter } from "next/navigation";
 import { musicFileDatabase } from "@/app/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import AddingNewSong from "./AddingNewSong";
+import MusicPlayer from "./MusicPlayer";
 
 const UIController = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentSong, setCurrentSong] = useState<any>(null);
   return (
     <div id="ui_controller" className="w-[100%] h-[100%] flex flex-col">
       <UIHeader />
-      <UIMain />
+      <UIMain setCurrentSong={setCurrentSong} currentSong={currentSong} />
     </div>
   );
 };
@@ -150,7 +153,10 @@ const SearchAndUpload: React.FC<{
   );
 };
 
-const UIMain: React.FC = () => {
+const UIMain: React.FC<{
+  currentSong: SongType | null;
+  setCurrentSong: (song: SongType) => void;
+}> = ({ currentSong, setCurrentSong }) => {
   const [isAddingNewSongWindowOpened, setIsAddingNewSongWindowOpened] =
     useState(false);
 
@@ -171,8 +177,10 @@ const UIMain: React.FC = () => {
         {isAddingNewSongWindowOpened ? <div>Hello</div> : <></>}
         <SongController
           isTheAddingWindowOpening={isAddingNewSongWindowOpened}
+          setCurrentSong={setCurrentSong}
           // setIsAddingNewSongWindowOpened={setIsAddingNewSongWindowOpened}
         />
+        {currentSong && <MusicPlayer song={currentSong} />}
       </div>
     </>
   );
@@ -180,7 +188,8 @@ const UIMain: React.FC = () => {
 
 const SongController: React.FC<{
   isTheAddingWindowOpening: boolean;
-}> = ({ isTheAddingWindowOpening }) => {
+  setCurrentSong: (song: SongType) => void;
+}> = ({ isTheAddingWindowOpening, setCurrentSong }) => {
   const [isClickedReleased, setIsClickedReleased] = useState(false);
   const [isClickedUpcomming, setIsClickedUpcomming] = useState(false);
   // const [isTheAddingWindowOpeneing, setIsAddingNewSongWindowOpened] = useState(false);
@@ -252,6 +261,7 @@ const SongController: React.FC<{
                         // imgSrc="https://th.bing.com/th/id/OIP.yl1i3fg_sD1sU82ZHLG7SwAAAA?rs=1&pid=ImgDetMain"
                         artist="Lana Del Rey"
                         songName="Summertime Sadness"
+                        setCurrentSong={setCurrentSong}
                       />
                     </td>
                     <td>200K</td>
@@ -270,6 +280,7 @@ const SongController: React.FC<{
                     listenerViews="1.2M"
                     saveViews="423K"
                     releasedDate="11-11-2020"
+                    setCurrentSong={setCurrentSong}
                   />
 
                   {/* <br /> */}
@@ -282,6 +293,7 @@ const SongController: React.FC<{
                     listenerViews="1.1M"
                     saveViews="671K"
                     releasedDate="01-10-2019"
+                    setCurrentSong={setCurrentSong}
                   />
 
                   <TableRow
@@ -292,6 +304,7 @@ const SongController: React.FC<{
                     listenerViews="2.3M"
                     saveViews="981K"
                     releasedDate="13-13-2021"
+                    setCurrentSong={setCurrentSong}
                   />
                 </tbody>
               </table>
@@ -303,7 +316,7 @@ const SongController: React.FC<{
   );
 };
 
-type SongType = {
+export type SongType = {
   // imgSrc: string;
   artist: string;
   songName: string;
@@ -319,7 +332,15 @@ type TableRowType = {
   releasedDate: string;
 };
 
-const Song: React.FC<SongType> = ({ artist, songName }) => {
+const Song: React.FC<
+  SongType & {
+    setCurrentSong: (song: SongType) => void;
+  }
+> = ({ artist, songName, setCurrentSong }) => {
+  const [authorLink, setAuthorLink] = useState("");
+
+  const router = useRouter();
+
   return (
     <>
       <div id="song" className="flex justify-center items-center">
@@ -337,12 +358,21 @@ const Song: React.FC<SongType> = ({ artist, songName }) => {
 
         <>
           <div id="song_detail" className="flex flex-col justify-center">
-            <div id="song_name">{songName}</div>
+            <div
+              id="song_name"
+              className="cursor-pointer"
+              onClick={() => {
+                // router.push(`/songs/${songName}`);
+                setCurrentSong({ artist, songName }); // Update the current song
+              }}
+            >
+              {songName}
+            </div>
             <div
               id="song_artist"
               className="flex desktop:text-[0.9rem] text-slate-500"
             >
-              {artist}
+              <a href={`https://google.com?search=${artist}`}>{artist}</a>
             </div>
           </div>
         </>
@@ -351,7 +381,11 @@ const Song: React.FC<SongType> = ({ artist, songName }) => {
   );
 };
 
-const TableRow: React.FC<TableRowType> = ({
+const TableRow: React.FC<
+  TableRowType & {
+    setCurrentSong: (song: SongType) => void;
+  }
+> = ({
   // imgSrc,
   artist,
   songName,
@@ -359,6 +393,7 @@ const TableRow: React.FC<TableRowType> = ({
   listenerViews,
   saveViews,
   releasedDate,
+  setCurrentSong,
 }) => {
   return (
     <>
@@ -369,6 +404,7 @@ const TableRow: React.FC<TableRowType> = ({
             // imgSrc={`${imgSrc}`}
             artist={`${artist}`}
             songName={`${songName}`}
+            setCurrentSong={setCurrentSong}
           />
         </td>
         <td>{streamViews}</td>
