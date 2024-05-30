@@ -1,8 +1,58 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SongType } from "./UIController";
+import { musicFileDatabase } from "@/app/firebaseConfig";
+import { getDocs, collection } from "firebase/firestore";
 
-const MusicPlayer: React.FC<{ song: SongType | null }> = ({ song }) => {
+const MusicPlayer: React.FC<{ song: SongType | any }> = ({ song }) => {
+  const [identifiedSong, setIdentifiedSong] = useState<any>({});
+
+  useEffect(() => {
+    // console.log(`song's file URL : ${song?.fileURL}`);
+    console.log(`song in MusicPlayer : ${song.songName}`);
+
+    const fetchSongs = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          collection(musicFileDatabase, "musicFiles")
+        );
+
+        const fetchedSongs: any = [];
+        // const foundSong: any = [];
+
+        querySnapshot.forEach((doc) => {
+          // if (doc.data().songName === song.songName) {
+          //   foundSong.push(doc.data());
+          // }
+          fetchedSongs.push(doc.data());
+        });
+
+        fetchedSongs.map((each: any) => {
+          console.log(`song in MusicPlayer : ${each.songName}`);
+          if (each.songName == song.songName) {
+            console.log(`Found the matched song : `);
+            console.log(
+              `Name: ${each.songName}\nArtist: ${each.authorName}\nFile URL: ${each.fileURL}`
+            );
+            setIdentifiedSong(each);
+          }
+        });
+
+        // setIdentifiedSong(foundSong);
+        // console.log(`identifiedSong : ${identifiedSong}`);
+      } catch (error) {
+        console.error(`Failed when finding the matched song ----> ${error}`);
+      } finally {
+        console.log(`Done`);
+      }
+    };
+    fetchSongs();
+  }, [song]);
+
+  useEffect(() => {
+    console.log(`identifiedSong supervisor: ${identifiedSong.fileURL}`);
+  }, [identifiedSong, setIdentifiedSong]);
+
   return (
     <div
       id="music_player"
@@ -12,7 +62,7 @@ const MusicPlayer: React.FC<{ song: SongType | null }> = ({ song }) => {
         Playing : {song?.songName} by {song?.artist}
       </h2> */}
       <SongDetail songName={song?.songName} author={song?.artist} />
-      <MusicPlayerOperator />
+      <MusicPlayerOperator fileURL={identifiedSong?.fileURL} />
     </div>
   );
 };
@@ -30,7 +80,12 @@ const SongDetail: React.FC<{
         {songName}
         <span
           className="desktop:ml-[0.4rem] desktop:mt-[0.3rem] cursor-pointer"
-          onClick={() => setIsLoved(!isLoved)}
+          onClick={() => {
+            !isLoved
+              ? console.log(`Loved the song : ${songName}`)
+              : console.log(`Dislike the song : ${songName}`);
+            setIsLoved(!isLoved);
+          }}
         >
           {isLoved ? (
             <svg
@@ -67,12 +122,23 @@ const SongDetail: React.FC<{
   );
 };
 
-const MusicPlayerOperator: React.FC = () => {
+const MusicPlayerOperator: React.FC<{ fileURL: string | undefined }> = ({
+  fileURL,
+}) => {
   return (
-    <div>
+    <div
+      id="palyer_operator"
+      onClick={() => {
+        console.log(`Clicked`);
+      }}
+    >
       <audio controls>
         {/* <source src="../../../audio/Recording (2).m4a" /> */}
-        <source src="../audio/Recording (2).m4a" />
+        {fileURL ? (
+          <source src={fileURL} type="audio/mpeg" />
+        ) : (
+          <p>No audio file available</p>
+        )}
       </audio>
     </div>
   );

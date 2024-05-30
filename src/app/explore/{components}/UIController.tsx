@@ -164,6 +164,10 @@ const UIMain: React.FC<{
     console.log(`isAddingNewSongWindowOpened : ${isAddingNewSongWindowOpened}`);
   }, [isAddingNewSongWindowOpened]);
 
+  useEffect(() => {
+    console.log(`song : ${currentSong}`);
+  }, []);
+
   return (
     <>
       <div
@@ -230,6 +234,7 @@ const SongController: React.FC<{
     songs.map((song: any) => {
       console.log(song?.authorName);
       console.log(song?.songName);
+      console.log(song?.fileURL);
     });
     console.log(`isLoading : ${isLoading}`);
   }, [songs, setSongs]);
@@ -306,6 +311,7 @@ const SongController: React.FC<{
                         artist="Lana Del Rey"
                         songName="Summertime Sadness"
                         setCurrentSong={setCurrentSong}
+                        // fileURL={"?"}
                       />
                     </td>
                     <td>200K</td>
@@ -376,6 +382,7 @@ export type SongType = {
   // imgSrc: string;
   artist: string | null;
   songName: string | null;
+  // fileURL: any;
 };
 
 type TableRowType = {
@@ -460,6 +467,7 @@ const TableRow: React.FC<
             // imgSrc={`${imgSrc}`}
             artist={`${artist}`}
             songName={`${songName}`}
+            // fileURL={}
             setCurrentSong={setCurrentSong}
           />
         </td>
