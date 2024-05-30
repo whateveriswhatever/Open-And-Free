@@ -5,7 +5,15 @@ import { musicFileDatabase } from "@/app/firebaseConfig";
 import { getDocs, collection } from "firebase/firestore";
 
 const MusicPlayer: React.FC<{ song: SongType | any }> = ({ song }) => {
-  const [identifiedSong, setIdentifiedSong] = useState<any>({});
+  const [identifiedSong, setIdentifiedSong] = useState<{
+    authorName: string;
+    fileURL: string;
+    songName: string;
+  }>({
+    authorName: "",
+    fileURL: "",
+    songName: "",
+  });
 
   useEffect(() => {
     // console.log(`song's file URL : ${song?.fileURL}`);
