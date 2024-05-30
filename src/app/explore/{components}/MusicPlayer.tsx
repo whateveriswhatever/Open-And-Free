@@ -6,7 +6,7 @@ const MusicPlayer: React.FC<{ song: SongType | null }> = ({ song }) => {
   return (
     <div
       id="music_player"
-      className="desktop:w-full desktop:h-full bg-neutral-100 desktop:mt-[10rem] flex flex-row justify-evenly"
+      className="desktop:w-full desktop:h-full bg-neutral-100 desktop:mt-[4rem] flex flex-row justify-evenly"
     >
       {/* <h2>
         Playing : {song?.songName} by {song?.artist}

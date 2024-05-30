@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { musicFileDatabase } from "@/app/firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 import AddingNewSong from "./AddingNewSong";
 import MusicPlayer from "./MusicPlayer";
 
@@ -166,7 +166,10 @@ const UIMain: React.FC<{
 
   return (
     <>
-      <div id="ui_main" className="w-[100%] desktop:h-[100%]">
+      <div
+        id="ui_main"
+        className="w-[100%] desktop:h-[666px] overflow-y-scroll"
+      >
         <SearchAndUpload
           isOpened={isAddingNewSongWindowOpened}
           setIsOpened={setIsAddingNewSongWindowOpened}
@@ -191,8 +194,49 @@ const SongController: React.FC<{
   setCurrentSong: (song: SongType) => void;
 }> = ({ isTheAddingWindowOpening, setCurrentSong }) => {
   const [isClickedReleased, setIsClickedReleased] = useState(false);
-  const [isClickedUpcomming, setIsClickedUpcomming] = useState(false);
+  const [isClickedUpcomming, setIsClickedUpcomming] = useState(true);
   // const [isTheAddingWindowOpeneing, setIsAddingNewSongWindowOpened] = useState(false);
+  const [songs, setSongs] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          collection(musicFileDatabase, "musicFiles")
+        );
+        console.log(querySnapshot);
+        const fetchedSongs: any = [];
+
+        querySnapshot.forEach((doc) => {
+          console.log(`doc.data() : ${doc.data()}`);
+          fetchedSongs.push(doc.data());
+        });
+
+        setSongs(fetchedSongs);
+        console.log(`songs : ${songs}`);
+      } catch (error) {
+        console.error(`Error fetching songs: ${error}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchSongs();
+  }, []);
+
+  useEffect(() => {
+    console.log(`songs : ${songs}`);
+    console.log("All available songs : ");
+    songs.map((song: any) => {
+      console.log(song?.authorName);
+      console.log(song?.songName);
+    });
+    console.log(`isLoading : ${isLoading}`);
+  }, [songs, setSongs]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -242,8 +286,8 @@ const SongController: React.FC<{
           <br />
           {isTheAddingWindowOpening ? <div>Hello</div> : <></>}
           <>
-            <div id="songs_collection" className="w-[100%]">
-              <table className="desktop:w-[100%]">
+            <div id="songs_collection" className="w-[100%] overflow-y-auto">
+              <table className="desktop:w-[100%] overflow-y-auto">
                 <thead>
                   <tr className="desktop:text-[0.7rem] text-slate-400">
                     <th>Name</th>
@@ -306,6 +350,18 @@ const SongController: React.FC<{
                     releasedDate="13-13-2021"
                     setCurrentSong={setCurrentSong}
                   />
+
+                  {songs.map((song: any) => (
+                    <TableRow
+                      artist={song.authorName}
+                      songName={song.songName}
+                      streamViews={"?"}
+                      listenerViews={"?"}
+                      saveViews={"?"}
+                      releasedDate={"?"}
+                      setCurrentSong={setCurrentSong}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -318,18 +374,18 @@ const SongController: React.FC<{
 
 export type SongType = {
   // imgSrc: string;
-  artist: string;
-  songName: string;
+  artist: string | null;
+  songName: string | null;
 };
 
 type TableRowType = {
   // imgSrc: string;
   artist: string;
   songName: string;
-  streamViews: string;
-  listenerViews: string;
-  saveViews: string;
-  releasedDate: string;
+  streamViews: string | null;
+  listenerViews: string | null;
+  saveViews: string | null;
+  releasedDate: string | null;
 };
 
 const Song: React.FC<
