@@ -214,11 +214,13 @@ const SongController: React.FC<{
 
         querySnapshot.forEach((doc) => {
           console.log(`doc.data() : ${doc.data()}`);
+          console.log(`doc.id : ${doc.id}`);
           fetchedSongs.push(doc.data());
         });
 
         setSongs(fetchedSongs);
         console.log(`songs : ${songs}`);
+        // console.log(`song's ID : ${songs.id}`);
       } catch (error) {
         console.error(`Error fetching songs: ${error}`);
       } finally {

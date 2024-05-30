@@ -1,15 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { SongType } from "./UIController";
-import { musicFileDatabase } from "@/app/firebaseConfig";
-import { getDocs, collection } from "firebase/firestore";
+import { musicFileDatabase, storage } from "@/app/firebaseConfig";
+import { getDocs, collection, doc, deleteDoc } from "firebase/firestore";
+import { ref, deleteObject } from "firebase/storage";
+import { useRouter } from "next/navigation";
 
 const MusicPlayer: React.FC<{ song: SongType | any }> = ({ song }) => {
   const [identifiedSong, setIdentifiedSong] = useState<{
+    id: string;
     authorName: string;
     fileURL: string;
     songName: string;
   }>({
+    id: "",
     authorName: "",
     fileURL: "",
     songName: "",
@@ -32,7 +36,12 @@ const MusicPlayer: React.FC<{ song: SongType | any }> = ({ song }) => {
           // if (doc.data().songName === song.songName) {
           //   foundSong.push(doc.data());
           // }
-          fetchedSongs.push(doc.data());
+          fetchedSongs.push({
+            songName: doc.data().songName,
+            fileURL: doc.data().fileURL,
+            authorName: doc.data().authorName,
+            id: doc.id,
+          });
         });
 
         fetchedSongs.map((each: any) => {
@@ -71,6 +80,11 @@ const MusicPlayer: React.FC<{ song: SongType | any }> = ({ song }) => {
       </h2> */}
       <SongDetail songName={song?.songName} author={song?.artist} />
       <MusicPlayerOperator fileURL={identifiedSong?.fileURL} />
+
+      <DiscardSongButton
+        currentSongID={identifiedSong?.id}
+        currentFileURL={identifiedSong?.fileURL}
+      />
     </div>
   );
 };
@@ -87,7 +101,7 @@ const SongDetail: React.FC<{
       <div id="song_name" className="desktop:text-[1rem] flex flex-row">
         {songName}
         <span
-          className="desktop:ml-[0.4rem] desktop:mt-[0.3rem] cursor-pointer"
+          className="desktop:ml-[1rem] desktop:mt-[0.8rem] cursor-pointer"
           onClick={() => {
             !isLoved
               ? console.log(`Loved the song : ${songName}`)
@@ -101,7 +115,7 @@ const SongDetail: React.FC<{
               width="16"
               height="16"
               fill="currentColor"
-              className="bi bi-heart-fill"
+              className="bi bi-heart-fill "
               viewBox="0 0 16 16"
             >
               <path
@@ -148,6 +162,70 @@ const MusicPlayerOperator: React.FC<{ fileURL: string | undefined }> = ({
           <p>No audio file available</p>
         )}
       </audio>
+    </div>
+  );
+};
+
+const DiscardSongButton: React.FC<{
+  currentSongID: string;
+  currentFileURL: string;
+}> = ({ currentSongID, currentFileURL }) => {
+  // find the Song's ID via song's name
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const router = useRouter();
+
+  const deletingSongHandler = async (
+    songID: string,
+    fileURL: string
+  ): Promise<void> => {
+    console.log(`currentSongID : ${currentSongID}`);
+    try {
+      // Delete song under the document format inner the Firebase Firestore
+      await deleteDoc(doc(musicFileDatabase, "musicFiles", songID));
+      console.log(`Document with ID ${currentSongID} erased from firestore`);
+
+      // Get reference to the file in Firebase Storage
+      const audioFileRef = ref(storage, currentFileURL);
+
+      // Erase file from Firebase storage
+      await deleteObject(audioFileRef);
+      console.log(`Audio file at ${fileURL} deleted from the Firebase Storage`);
+      router.push("/explore");
+    } catch (error) {
+      console.error(
+        `Failed when deleting the given song ${currentSongID}\n----> ${error}`
+      );
+    }
+  };
+
+  const handleDeleting = async () => {
+    console.log(`Discarding the song with ID : ${currentSongID}`);
+    await deletingSongHandler(currentSongID, currentFileURL);
+    router.push("/explore");
+  };
+
+  return (
+    <div
+      id="remove_song"
+      className="desktop:h-[50px] flex items-center cursor-pointer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleDeleting}
+    >
+      <span className="desktop:text-[0.69rem]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className={`bi bi-trash3 desktop:w-[12px] desktop:h-[12px] ${
+            isHovered ? "text-red-600" : ""
+          }`}
+          viewBox="0 0 16 16"
+        >
+          <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+        </svg>
+      </span>
     </div>
   );
 };
