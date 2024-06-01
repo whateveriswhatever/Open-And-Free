@@ -1,11 +1,16 @@
 import React from "react";
 import Image from "next/image";
 
-const LeftSideProfileCard = () => {
+// type UsernameType = {
+//   firstname: string;
+//   setFirstname: React.Dispatch<React.SetStateAction<string>>;
+// };
+
+const LeftSideProfileCard: React.FC = () => {
   return (
     <div
       id="left_side_card"
-      className="desktop:h-[400px] flex flex-col items-center justify-center desktop:ml-[2.4rem]"
+      className="desktop:h-[400px] flex flex-col items-center justify-center desktop:ml-[1.8rem]"
     >
       <div id="header" className="desktop:mb-[3rem]">
         <h2>User Information</h2>
