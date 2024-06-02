@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const Main = () => {
@@ -52,6 +52,21 @@ type ButtonType = {
 
 const ExploreSound: React.FC<ButtonType> = ({ content }) => {
   const router = useRouter();
+
+  // React.useEffect(() => {
+  //   // using Hash Map to store current cookie's key-value pairs
+  //   let cookieLookUp: any = {};
+  //   let fileteredCookiePath: string[] = document.cookie.split(";");
+
+  //   fileteredCookiePath.map((each: string) => {
+  //     let curr: string[] = each.split("=");
+  //     if (curr[0][0] !== "_") {
+  //       cookieLookUp[curr[0]] = curr[1];
+  //     }
+  //   });
+
+  //   console.log(`cookieLookUp: ${Object.values(cookieLookUp)}`);
+  // }, []);
   return (
     <>
       <div className="flex justify-center phone:w-[4rem] phone:h-[1.9rem] tablet:w-[8rem] tablet:h-[4rem] border-2 rounded-3xl border-pink-900 phone:text-[0.5rem] tablet:text-[0.8rem] desktop:text-[0.85rem] font-bold desktop:mt-[1rem]">
@@ -68,7 +83,7 @@ const ExploreSound: React.FC<ButtonType> = ({ content }) => {
               }
             });
 
-            let isUserSignedIn: boolean = "firstname" in cookieLookUp;
+            let isUserSignedIn: boolean = " firstname" in cookieLookUp;
             if (isUserSignedIn) {
               router.push("/explore");
             } else {
