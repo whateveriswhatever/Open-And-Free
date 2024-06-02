@@ -38,7 +38,7 @@ const UserAccount: React.FC = () => {
     <>
       <div
         id="user_account"
-        className="desktop:w-[40px] desktop:h-[40px] border-2 border-slate-400 rounded-[1.2rem] desktop:mr-[3rem]"
+        className="desktop:w-[40px] desktop:h-[40px] border-2 border-slate-400 rounded-[1.2rem] desktop:mr-[3rem] cursor-pointer"
         onClick={() => {
           router.push("/profile");
         }}

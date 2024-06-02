@@ -63,13 +63,13 @@ const RightSideProfileCard: React.FC<UserCookieData> = ({
       // if (key === " description") console.log(`found description`);
     }
 
-    console.log(`fileteredCookiePath: ${fileredCookiePath}`);
-    const firstnameKeyValPair: string[] = fileredCookiePath[4].split("=");
-    console.log(firstnameKeyValPair);
-    const lastnameKeyValPair: string[] = fileredCookiePath[5].split("=");
-    console.log(lastnameKeyValPair);
-    const bioKeyValPair: string[] = fileredCookiePath[3].split("=");
-    console.log(bioKeyValPair);
+    // console.log(`fileteredCookiePath: ${fileredCookiePath}`);
+    // const firstnameKeyValPair: string[] = fileredCookiePath[4].split("=");
+    // console.log(firstnameKeyValPair);
+    // const lastnameKeyValPair: string[] = fileredCookiePath[5].split("=");
+    // console.log(lastnameKeyValPair);
+    // const bioKeyValPair: string[] = fileredCookiePath[3].split("=");
+    // console.log(bioKeyValPair);
 
     // setCurrentFirstname(firstnameKeyValPair[1]);
     // setCurrentLastname(lastnameKeyValPair[1]);
@@ -225,7 +225,7 @@ const RightSideProfileCard: React.FC<UserCookieData> = ({
             ) : (
               <>
                 <p>
-                  {currentDescription.length === 0 ? (
+                  {!currentDescription || currentDescription == undefined ? (
                     "Let the other know about yourself ?"
                   ) : (
                     <p>{currentDescription}</p>
