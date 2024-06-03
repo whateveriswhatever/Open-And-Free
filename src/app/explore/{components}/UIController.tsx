@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { musicFileDatabase } from "@/app/firebaseConfig";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import AddingNewSong from "./AddingNewSong";
 import MusicPlayer from "./MusicPlayer";
+import FoundSongRes from "./FoundSongRes";
 
 const UIController = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -51,8 +52,10 @@ const SearchAndUpload: React.FC<{
   isOpened: boolean;
   setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
   onValueChange: (newValue: boolean) => void;
-}> = ({ isOpened, setIsOpened, onValueChange }) => {
+  onSearch: (query: string) => void; // New prop for searching handling
+}> = ({ isOpened, setIsOpened, onValueChange, onSearch }) => {
   // const [isOpened, setIsOpened] = useState(false);
+  const [searchingInput, setSearchingInput] = useState<string>("");
 
   const router = useRouter();
 
@@ -111,8 +114,20 @@ const SearchAndUpload: React.FC<{
                   type="text"
                   placeholder="Search library"
                   className="desktop:w-[90%] desktop:h-[38px] focus:outline-none desktop:text-[0.9rem]"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setSearchingInput(e.target.value);
+                    onSearch(e.target.value); // Call onSearch with the input value
+                  }}
                 />
               </div>
+
+              {/* {searchingInput ? (
+                <>
+                  <FoundSongRes />
+                </>
+              ) : (
+                <></>
+              )} */}
             </div>
           </>
           <>
@@ -148,6 +163,13 @@ const SearchAndUpload: React.FC<{
             </div>
           </>
         </div>
+        {/* {searchingInput ? (
+          <>
+            <FoundSongRes />
+          </>
+        ) : (
+          <></>
+        )} */}
       </div>
     </>
   );
@@ -159,6 +181,8 @@ const UIMain: React.FC<{
 }> = ({ currentSong, setCurrentSong }) => {
   const [isAddingNewSongWindowOpened, setIsAddingNewSongWindowOpened] =
     useState(false);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     console.log(`isAddingNewSongWindowOpened : ${isAddingNewSongWindowOpened}`);
@@ -180,12 +204,14 @@ const UIMain: React.FC<{
           onValueChange={(newValue: boolean) =>
             setIsAddingNewSongWindowOpened(newValue)
           }
+          onSearch={setSearchQuery} // Set the search query state
         />
         {isAddingNewSongWindowOpened ? <div>Hello</div> : <></>}
         <SongController
           isTheAddingWindowOpening={isAddingNewSongWindowOpened}
           setCurrentSong={setCurrentSong}
           // setIsAddingNewSongWindowOpened={setIsAddingNewSongWindowOpened}
+          searchQuery={searchQuery} // Pass the search query to SongController
         />
         {currentSong && <MusicPlayer song={currentSong} />}
       </div>
@@ -196,39 +222,75 @@ const UIMain: React.FC<{
 const SongController: React.FC<{
   isTheAddingWindowOpening: boolean;
   setCurrentSong: (song: SongType) => void;
-}> = ({ isTheAddingWindowOpening, setCurrentSong }) => {
+  searchQuery: string; // Accept search query as a prop
+}> = ({ isTheAddingWindowOpening, setCurrentSong, searchQuery }) => {
   const [isClickedReleased, setIsClickedReleased] = useState(false);
   const [isClickedUpcomming, setIsClickedUpcomming] = useState(true);
   // const [isTheAddingWindowOpeneing, setIsAddingNewSongWindowOpened] = useState(false);
   const [songs, setSongs] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // useEffect(() => {
+  //   const fetchSongs = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const querySnapshot = await getDocs(
+  //         collection(musicFileDatabase, "musicFiles")
+  //       );
+  //       console.log(querySnapshot);
+  //       const fetchedSongs: any = [];
+
+  //       querySnapshot.forEach((doc) => {
+  //         console.log(`doc.data() : ${doc.data()}`);
+  //         console.log(`doc.id : ${doc.id}`);
+  //         fetchedSongs.push(doc.data());
+  //       });
+
+  //       setSongs(fetchedSongs);
+  //       console.log(`songs : ${songs}`);
+  //       // console.log(`song's ID : ${songs.id}`);
+  //     } catch (error) {
+  //       console.error(`Error fetching songs: ${error}`);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchSongs();
+  // }, []);
+
   useEffect(() => {
-    const fetchSongs = async () => {
+    const fetchSong = async (): Promise<void> => {
+      setIsLoading(true);
+
       try {
-        const querySnapshot = await getDocs(
-          collection(musicFileDatabase, "musicFiles")
-        );
-        console.log(querySnapshot);
-        const fetchedSongs: any = [];
+        let searchingQuery;
+        if (searchQuery) {
+          searchingQuery = query(
+            collection(musicFileDatabase, "musicFiles"),
+            where("songName", ">=", searchQuery),
+            where("songName", "<=", `${searchQuery}\uf8ff`)
+          );
+        } else {
+          searchingQuery = collection(musicFileDatabase, "musicFiles");
+        }
+
+        const querySnapshot = await getDocs(searchingQuery);
+
+        const fetchedSongs: any[] = [];
 
         querySnapshot.forEach((doc) => {
-          console.log(`doc.data() : ${doc.data()}`);
-          console.log(`doc.id : ${doc.id}`);
           fetchedSongs.push(doc.data());
         });
 
         setSongs(fetchedSongs);
-        console.log(`songs : ${songs}`);
-        // console.log(`song's ID : ${songs.id}`);
       } catch (error) {
-        console.error(`Error fetching songs: ${error}`);
+        console.error(`Failed when fetching songs ----> ${error}`);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchSongs();
-  }, []);
+    fetchSong();
+  }, [searchQuery]);
 
   useEffect(() => {
     console.log(`songs : ${songs}`);
