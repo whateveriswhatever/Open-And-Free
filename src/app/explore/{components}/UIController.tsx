@@ -120,14 +120,6 @@ const SearchAndUpload: React.FC<{
                   }}
                 />
               </div>
-
-              {/* {searchingInput ? (
-                <>
-                  <FoundSongRes />
-                </>
-              ) : (
-                <></>
-              )} */}
             </div>
           </>
           <>
@@ -163,13 +155,6 @@ const SearchAndUpload: React.FC<{
             </div>
           </>
         </div>
-        {/* {searchingInput ? (
-          <>
-            <FoundSongRes />
-          </>
-        ) : (
-          <></>
-        )} */}
       </div>
     </>
   );
@@ -229,34 +214,6 @@ const SongController: React.FC<{
   // const [isTheAddingWindowOpeneing, setIsAddingNewSongWindowOpened] = useState(false);
   const [songs, setSongs] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   const fetchSongs = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const querySnapshot = await getDocs(
-  //         collection(musicFileDatabase, "musicFiles")
-  //       );
-  //       console.log(querySnapshot);
-  //       const fetchedSongs: any = [];
-
-  //       querySnapshot.forEach((doc) => {
-  //         console.log(`doc.data() : ${doc.data()}`);
-  //         console.log(`doc.id : ${doc.id}`);
-  //         fetchedSongs.push(doc.data());
-  //       });
-
-  //       setSongs(fetchedSongs);
-  //       console.log(`songs : ${songs}`);
-  //       // console.log(`song's ID : ${songs.id}`);
-  //     } catch (error) {
-  //       console.error(`Error fetching songs: ${error}`);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchSongs();
-  // }, []);
 
   useEffect(() => {
     const fetchSong = async (): Promise<void> => {
@@ -326,9 +283,6 @@ const SongController: React.FC<{
                   } font-bold`}
                   onClick={() => {
                     setIsClickedReleased(!isClickedReleased);
-                    // console.log(
-                    //   `isTheAddingNewSongWindowOpened: ${isTheAddingWindowOpening}`
-                    // );
                   }}
                 >
                   <button>Released</button>
