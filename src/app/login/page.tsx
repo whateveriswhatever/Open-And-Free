@@ -65,14 +65,14 @@ const Form: React.FC = () => {
         // handle successful login, redirect user or save token
         console.log(`Login successuflly !!!`);
         // save user's login email with cookies
-        document.cookie = `email=${userEmail}; expires=${new Date(
-          2025,
-          0,
-          1
-        ).toUTCString()}`;
+        // document.cookie = `email=${userEmail}; expires=${new Date(
+        //   2025,
+        //   0,
+        //   1
+        // ).toUTCString()}`;
 
         // save user's login email with sessions
-        sessionStorage.setItem("email", userEmail);
+        // sessionStorage.setItem("email", userEmail);
 
         // Indirect user to the dashboard
         router.push("/explore");
