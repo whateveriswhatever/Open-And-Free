@@ -28,6 +28,15 @@ const UploadForm: React.FC = () => {
 
   const router = useRouter();
 
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
+      // Server-side, do nothing.
+      return;
+    }
+
+    // Client-side only code here
+  }, []);
+
   const addNewMusicFile = async (
     songName: string,
     authorName: string,
