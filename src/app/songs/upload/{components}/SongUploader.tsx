@@ -28,15 +28,15 @@ const UploadForm: React.FC = () => {
 
   const router = useRouter();
 
-  React.useEffect(() => {
-    if (typeof window === "undefined") {
-      // Server-side, do nothing.
-      return;
-    }
+  // React.useEffect(() => {
+  //   if (typeof window === "undefined") {
+  //     // Server-side, do nothing.
+  //     return;
+  //   }
 
-    // Client-side only code here
-    console.log("Found");
-  }, []);
+  //   // Client-side only code here
+  //   console.log("Found");
+  // }, []);
 
   const addNewMusicFile = async (
     songName: string,
@@ -53,11 +53,15 @@ const UploadForm: React.FC = () => {
     try {
       await uploadBytes(storageRef, mp3_4File);
       const fileURL = await getDownloadURL(storageRef);
+      const addedDate = new Date().toUTCString().toString();
+      let totalPlayedTimes = 0;
 
       await addDoc(collection(musicFileDatabase, "musicFiles"), {
         songName,
         authorName,
         fileURL,
+        totalPlayedTimes,
+        addedDate,
       });
 
       console.log("Document successfully written!");

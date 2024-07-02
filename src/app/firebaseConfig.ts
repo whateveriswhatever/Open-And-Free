@@ -3,6 +3,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { isSupported } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -27,5 +28,14 @@ isSupported();
 
 const musicFileDatabase = getFirestore(app);
 const storage = getStorage(app);
+
+export const initializeFirebaseApp = () => {
+  if (typeof window !== "undefined") {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const musicFileDatabase = getFirestore(app);
+    const storage = getStorage(app);
+  }
+};
 
 export { musicFileDatabase, storage };

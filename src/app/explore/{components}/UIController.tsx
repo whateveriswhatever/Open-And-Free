@@ -65,24 +65,25 @@ const SearchAndUpload: React.FC<{
 
   const router = useRouter();
 
-  const addNewMusicFile = async (
-    songName: string,
-    authorName: string,
-    mp3_4File: any
-  ): Promise<any> => {
-    try {
-      const docRef = await addDoc(collection(musicFileDatabase, "messages"), {
-        songName: songName,
-        authorName: authorName,
-        musicFile: mp3_4File,
-      });
-      console.log(`Document was written with ID: ${docRef.id}`);
-      return true;
-    } catch (error) {
-      console.error(`Failed when adding new docment ${error}`);
-      return false;
-    }
-  };
+  // const addNewMusicFile = async (
+  //   songName: string,
+  //   authorName: string,
+  //   mp3_4File: any
+  // ): Promise<any> => {
+  //   try {
+  //     const docRef = await addDoc(collection(musicFileDatabase, "musicFiles"), {
+  //       songName: songName,
+  //       authorName: authorName,
+  //       musicFile: mp3_4File,
+  //       playedTimes: 0,
+  //     });
+  //     console.log(`Document was written with ID: ${docRef.id}`);
+  //     return true;
+  //   } catch (error) {
+  //     console.error(`Failed when adding new docment ${error}`);
+  //     return false;
+  //   }
+  // };
 
   return (
     <>
@@ -262,6 +263,8 @@ const SongController: React.FC<{
       console.log(song?.authorName);
       console.log(song?.songName);
       console.log(song?.fileURL);
+      console.log(song?.totalPlayedTimes);
+      console.log(song?.addedDate.toDate().toUTCString().toString());
     });
     console.log(`isLoading : ${isLoading}`);
   }, [songs, setSongs]);
@@ -321,14 +324,14 @@ const SongController: React.FC<{
                   <tr className="desktop:text-[0.7rem] text-slate-400">
                     <th>Name</th>
                     <th>Streams</th>
-                    <th>Listeners</th>
-                    <th>Saves</th>
-                    <th>Release date</th>
+                    {/* <th>Listeners</th> */}
+                    {/* <th>Saves</th> */}
+                    <th>Added date</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  <tr className="text-center">
+                  {/* <tr className="text-center">
                     <td>
                       <Song
                         // imgSrc="https://th.bing.com/th/id/OIP.yl1i3fg_sD1sU82ZHLG7SwAAAA?rs=1&pid=ImgDetMain"
@@ -342,11 +345,11 @@ const SongController: React.FC<{
                     <td>12M</td>
                     <td>4M</td>
                     <td>23/12/2006</td>
-                  </tr>
+                  </tr> */}
 
                   {/* <br /> */}
 
-                  <TableRow
+                  {/* <TableRow
                     // imgSrc="https://th.bing.com/th/id/OIP.jU3Rq0KBJnjBTBrLQjcNMwAAAA?rs=1&pid=ImgDetMain"
                     artist="Munn"
                     songName="can you hear me?"
@@ -355,11 +358,11 @@ const SongController: React.FC<{
                     saveViews="423K"
                     releasedDate="11-11-2020"
                     setCurrentSong={setCurrentSong}
-                  />
+                  /> */}
 
                   {/* <br /> */}
 
-                  <TableRow
+                  {/* <TableRow
                     // imgSrc="https://i.scdn.co/image/ab67616d0000b2732abff3da1b5a18689e7a5a5b"
                     artist="Tom Rosenthal"
                     songName="Have We Met Before?"
@@ -368,9 +371,9 @@ const SongController: React.FC<{
                     saveViews="671K"
                     releasedDate="01-10-2019"
                     setCurrentSong={setCurrentSong}
-                  />
+                  /> */}
 
-                  <TableRow
+                  {/* <TableRow
                     // imgSrc="https://seeded-session-images.scdn.co/v1/img/track/1BxfuPKGuaTgP7aM0Bbdwr/en"
                     artist="Taylor Swift"
                     songName="Cruel Summer"
@@ -379,17 +382,18 @@ const SongController: React.FC<{
                     saveViews="981K"
                     releasedDate="13-13-2021"
                     setCurrentSong={setCurrentSong}
-                  />
+                  /> */}
 
                   {songs.map((song: any) => (
                     <TableRow
                       artist={song.authorName}
                       songName={song.songName}
-                      streamViews={"?"}
-                      listenerViews={"?"}
-                      saveViews={"?"}
-                      releasedDate={"?"}
+                      streamViews={song.totalPlayedTimes}
                       setCurrentSong={setCurrentSong}
+                      addedDate={song.addedDate
+                        .toDate()
+                        .toUTCString()
+                        .toString()}
                     />
                   ))}
                 </tbody>
@@ -406,17 +410,17 @@ export type SongType = {
   // imgSrc: string;
   artist: string | null;
   songName: string | null;
-  // fileURL: any;
+  totalPlayedTimes?: number | any;
+  addedDate?: string | any;
+  fileURL?: any;
 };
 
 type TableRowType = {
   // imgSrc: string;
   artist: string;
   songName: string;
-  streamViews: string | null;
-  listenerViews: string | null;
-  saveViews: string | null;
-  releasedDate: string | null;
+  streamViews: number | any;
+  addedDate?: string | any;
 };
 
 const Song: React.FC<
@@ -476,10 +480,8 @@ const TableRow: React.FC<
   // imgSrc,
   artist,
   songName,
+  addedDate,
   streamViews,
-  listenerViews,
-  saveViews,
-  releasedDate,
   setCurrentSong,
 }) => {
   return (
@@ -493,12 +495,11 @@ const TableRow: React.FC<
             songName={`${songName}`}
             // fileURL={}
             setCurrentSong={setCurrentSong}
+            // playedTimes={streamViews}
           />
         </td>
         <td>{streamViews}</td>
-        <td>{listenerViews}</td>
-        <td>{saveViews}</td>
-        <td>{releasedDate}</td>
+        <td>{addedDate}</td>
       </tr>
     </>
   );
