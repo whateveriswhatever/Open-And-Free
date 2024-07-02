@@ -31,7 +31,7 @@ const BrandIcon: React.FC = () => {
         id="brand_icon"
         className="desktop:h-[4rem] flex items-center justify-center"
       >
-        <h2 className="font-bold desktop:text-[2rem]">Group 3</h2>
+        <h2 className="font-bold desktop:text-[1.5rem]">Open&Free</h2>
       </div>
     </>
   );
