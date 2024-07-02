@@ -23,18 +23,24 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let analytics;
 isSupported();
 
 const musicFileDatabase = getFirestore(app);
 const storage = getStorage(app);
 
-export const initializeFirebaseApp = () => {
-  if (typeof window !== "undefined") {
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const musicFileDatabase = getFirestore(app);
-    const storage = getStorage(app);
+// export const initializeFirebaseApp = () => {
+//   if (typeof window !== "undefined") {
+//     const app = initializeApp(firebaseConfig);
+//     const auth = getAuth(app);
+//     const musicFileDatabase = getFirestore(app);
+//     const storage = getStorage(app);
+//   }
+// };
+
+const definingFirebaseAnalytic = async (): Promise<void> => {
+  if (typeof window !== "undefined" && (await isSupported())) {
+    analytics = getAnalytics(app);
   }
 };
 
