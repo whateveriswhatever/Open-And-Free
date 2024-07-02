@@ -35,6 +35,7 @@ const UploadForm: React.FC = () => {
     }
 
     // Client-side only code here
+    console.log("Found");
   }, []);
 
   const addNewMusicFile = async (

@@ -44,24 +44,21 @@ const Form: React.FC = () => {
     console.log(`Password: ${userPassword}`);
 
     try {
-      const response = await fetch(
-        "http://localhost/music-app-server-php/APIs/findOneDemo1.php",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded", // application/json
-          },
-          // body: JSON.stringify({ email: userEmail, password: userPassword }),
-          body: new URLSearchParams({
-            email: userEmail,
-            password: userPassword,
-          }).toString(),
-        }
-      );
+      const response = await fetch("http://localhost:3000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // application/json
+        },
+        // body: JSON.stringify({ email: userEmail, password: userPassword }),
+        body: JSON.stringify({
+          email: userEmail,
+          password: userPassword,
+        }),
+      });
 
       const userData = await response.json();
 
-      if (userData["status"] === "success") {
+      if (response.ok) {
         // handle successful login, redirect user or save token
         console.log(`Login successuflly !!!`);
         // save user's login email with cookies

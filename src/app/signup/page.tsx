@@ -63,24 +63,21 @@ const SignUpForm: React.FC = () => {
     console.log(`Is disabled: ${isDisabled}`);
 
     try {
-      const response = await fetch(
-        "http://localhost/music-app-server-php/APIs/create.php",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded", // application/x-www-form-urlencoded
-          },
-          // cannot use JSON.stringify() for the body section, I don't even know why. Maybe the underlying reason is laying under the utilization of submitting data through HTML form. Ironically, I've been using this method fairly in Node.js tho.
-          body: new URLSearchParams({
-            email: userRegisteredEmail,
-            password: userRegisterdPassword,
-          }).toString(),
-        }
-      );
+      const response = await fetch("http://localhost:3000/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // application/x-www-form-urlencoded
+        },
+        // cannot use JSON.stringify() for the body section, I don't even know why. Maybe the underlying reason is laying under the utilization of submitting data through HTML form. Ironically, I've been using this method fairly in Node.js tho.
+        body: JSON.stringify({
+          email: userRegisteredEmail,
+          password: userRegisterdPassword,
+        }).toString(),
+      });
 
       const responseData = await response.json();
 
-      if (responseData["status"] === "success") {
+      if (response.ok) {
         // handle successful registration, redirect user to the Login page or saving token if it feasible
         console.log(`Registered successfully!`);
         // Navigate user to the Login page
