@@ -43,7 +43,13 @@ const UserAccount: React.FC = () => {
         onClick={() => {
           router.push("/profile");
         }}
-      ></div>
+      >
+        <img
+          src="https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg"
+          alt="default avatar"
+          className="desktop:w-fit desktop:h-fit desktop:rounded-[1rem]"
+        />
+      </div>
     </>
   );
 };
