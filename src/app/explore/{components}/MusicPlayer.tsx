@@ -2,7 +2,16 @@
 import React, { useState, useEffect } from "react";
 import { SongType } from "./UIController";
 import { musicFileDatabase, storage } from "@/app/firebaseConfig";
-import { getDocs, collection, doc, deleteDoc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  doc,
+  deleteDoc,
+  increment,
+  updateDoc,
+  query,
+  where,
+} from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { useRouter } from "next/navigation";
 
@@ -12,6 +21,7 @@ const MusicPlayer: React.FC<{ song: SongType | any }> = ({ song }) => {
     authorName: string;
     fileURL: string;
     songName: string;
+    totalPlayedTimes?: number | any;
   }>({
     id: "",
     authorName: "",
@@ -57,6 +67,28 @@ const MusicPlayer: React.FC<{ song: SongType | any }> = ({ song }) => {
 
         // setIdentifiedSong(foundSong);
         // console.log(`identifiedSong : ${identifiedSong}`);
+        // Suppose if a song was found and being reserved inner the fetchedSongs array then it would definitely be located solely inner the array
+        // In the worst case, even if there are more than one song has been reserved inner the array then the song we are playing must be laid on the 0 index
+        const songRef = collection(musicFileDatabase, "musicFiles");
+
+        // Fetch the document for the song
+        const songQuery = query(
+          songRef,
+          where("songName", "==", identifiedSong["songName"])
+        );
+        const querySnapshotForSongQuery: any = await getDocs(songQuery);
+
+        if (!querySnapshotForSongQuery["empty"]) {
+          const songDoc = querySnapshotForSongQuery.docs[0]; // Assuming song names are unique
+          const songDocRef = songDoc.ref;
+
+          // Increment the totalPlayedTimes field by 1
+          await updateDoc(songDocRef, {
+            totalPlayedTimes: increment(1),
+          });
+
+          console.log(`Updated play count for ${song["name"]}`);
+        }
       } catch (error) {
         console.error(`Failed when finding the matched song ----> ${error}`);
       } finally {
@@ -154,7 +186,7 @@ const MusicPlayerOperator: React.FC<{ fileURL: string | undefined }> = ({
         console.log(`Clicked`);
       }}
     >
-      <audio controls>
+      <audio controls onClick={() => console.log(`Played the song`)}>
         {/* <source src="../../../audio/Recording (2).m4a" /> */}
         {fileURL ? (
           <source src={fileURL} type="audio/mpeg" />
