@@ -21,7 +21,7 @@ export default Main;
 const Deatail: React.FC = () => {
   return (
     <div className="phone:text-[16px]">
-      <h3>Group 3 Music app</h3>
+      <h3 className="font-bold">Open&Free</h3>
     </div>
   );
 };
