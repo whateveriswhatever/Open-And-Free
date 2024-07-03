@@ -22,7 +22,7 @@ const LoginForm: React.FC = () => {
       >
         <div id="heading">
           <h2 className="font-bold desktop:text-[2.5rem] phone:text-[1.2rem]">
-            Login to {"Group 3's Music App"}
+            Login to {"Open&Free"}
           </h2>
         </div>
 

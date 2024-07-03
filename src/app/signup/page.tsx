@@ -314,7 +314,7 @@ const Policy: React.FC<{
       <div id="our_policies">
         <div className="desktop:text-[0.9rem] desktop:w-[20rem]">
           <p>
-            {"When you click 'Create account', you agree with Group 3's "}{" "}
+            {"When you click 'Create account', you agree with Open&Free's "}{" "}
             <a href="#" className="underline">
               Terms and Conditions
             </a>
@@ -345,7 +345,7 @@ const Policy: React.FC<{
             setIsAgreed(e.target.checked);
           }}
         />
-        <p className="desktop:ml-[0.6rem]">{`I totally agree with group 3's policies`}</p>
+        <p className="desktop:ml-[0.6rem]">{`I totally agree with Open&Free's policies`}</p>
       </div>
     </>
   );
