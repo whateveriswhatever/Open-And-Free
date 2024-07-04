@@ -77,7 +77,7 @@ const TrackTitleInputBox: React.FC = () => {
 const Rules: React.FC = () => {
   return (
     <>
-      <div id="rules" className="desktop:mt-[-12rem]">
+      <div id="rules" className="desktop:mt-[-12rem] desktop:ml-[-6rem]">
         <>
           <div>Please DON'T:</div>
         </>
@@ -100,7 +100,7 @@ const MoveNext: React.FC = () => {
       <div
         id="move-next"
         className="desktop:w-[300px] flex justify-between items-center 
-        desktop:mt-[-10rem]"
+        desktop:mt-[-10rem] desktop:ml-[-8rem]"
       >
         <>
           <NextButton />
