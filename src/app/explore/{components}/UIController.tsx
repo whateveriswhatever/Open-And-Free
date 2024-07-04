@@ -331,59 +331,6 @@ const SongController: React.FC<{
                 </thead>
 
                 <tbody>
-                  {/* <tr className="text-center">
-                    <td>
-                      <Song
-                        // imgSrc="https://th.bing.com/th/id/OIP.yl1i3fg_sD1sU82ZHLG7SwAAAA?rs=1&pid=ImgDetMain"
-                        artist="Lana Del Rey"
-                        songName="Summertime Sadness"
-                        setCurrentSong={setCurrentSong}
-                        // fileURL={"?"}
-                      />
-                    </td>
-                    <td>200K</td>
-                    <td>12M</td>
-                    <td>4M</td>
-                    <td>23/12/2006</td>
-                  </tr> */}
-
-                  {/* <br /> */}
-
-                  {/* <TableRow
-                    // imgSrc="https://th.bing.com/th/id/OIP.jU3Rq0KBJnjBTBrLQjcNMwAAAA?rs=1&pid=ImgDetMain"
-                    artist="Munn"
-                    songName="can you hear me?"
-                    streamViews="169K"
-                    listenerViews="1.2M"
-                    saveViews="423K"
-                    releasedDate="11-11-2020"
-                    setCurrentSong={setCurrentSong}
-                  /> */}
-
-                  {/* <br /> */}
-
-                  {/* <TableRow
-                    // imgSrc="https://i.scdn.co/image/ab67616d0000b2732abff3da1b5a18689e7a5a5b"
-                    artist="Tom Rosenthal"
-                    songName="Have We Met Before?"
-                    streamViews="230K"
-                    listenerViews="1.1M"
-                    saveViews="671K"
-                    releasedDate="01-10-2019"
-                    setCurrentSong={setCurrentSong}
-                  /> */}
-
-                  {/* <TableRow
-                    // imgSrc="https://seeded-session-images.scdn.co/v1/img/track/1BxfuPKGuaTgP7aM0Bbdwr/en"
-                    artist="Taylor Swift"
-                    songName="Cruel Summer"
-                    streamViews="1.8M"
-                    listenerViews="2.3M"
-                    saveViews="981K"
-                    releasedDate="13-13-2021"
-                    setCurrentSong={setCurrentSong}
-                  /> */}
-
                   {songs.map((song: any) => (
                     <TableRow
                       artist={song.authorName}

@@ -44,7 +44,7 @@ const Form: React.FC = () => {
     console.log(`Password: ${userPassword}`);
 
     try {
-      const response = await fetch("http://localhost:3000/api/users/login", {
+      const response = await fetch("http://localhost:6060/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // application/json

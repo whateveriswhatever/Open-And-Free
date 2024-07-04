@@ -105,7 +105,7 @@ const MusicPlayer: React.FC<{ song: SongType | any }> = ({ song }) => {
   return (
     <div
       id="music_player"
-      className="desktop:w-full desktop:h-full bg-neutral-100 desktop:mt-[4rem] flex flex-row justify-evenly"
+      className="desktop:w-full desktop:h-[11%] bg-neutral-100 desktop:mt-[7rem] flex flex-row justify-evenly "
     >
       {/* <h2>
         Playing : {song?.songName} by {song?.artist}
@@ -181,12 +181,17 @@ const MusicPlayerOperator: React.FC<{ fileURL: string | undefined }> = ({
 }) => {
   return (
     <div
-      id="palyer_operator"
+      id="player_operator"
       onClick={() => {
         console.log(`Clicked`);
       }}
+      className=""
     >
-      <audio controls onClick={() => console.log(`Played the song`)}>
+      <audio
+        controls
+        onClick={() => console.log(`Played the song`)}
+        className="desktop:w-[700px] "
+      >
         {/* <source src="../../../audio/Recording (2).m4a" /> */}
         {fileURL ? (
           <source src={fileURL} type="audio/mpeg" />

@@ -63,7 +63,7 @@ const SignUpForm: React.FC = () => {
     console.log(`Is disabled: ${isDisabled}`);
 
     try {
-      const response = await fetch("http://localhost:3000/api/users", {
+      const response = await fetch("http://localhost:6060/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // application/x-www-form-urlencoded
