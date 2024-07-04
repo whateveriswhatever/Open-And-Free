@@ -1,10 +1,10 @@
 import React from "react";
 
-const HeaderNav = () => {
+const HeaderNav: React.FC<{ context: string }> = ({ context }) => {
   return (
     <div className="flex justify-between">
       <>
-        <LeftSubHeaderNav />
+        <LeftSubHeaderNav context={context} />
       </>
 
       <>
@@ -16,7 +16,7 @@ const HeaderNav = () => {
 
 export default HeaderNav;
 
-const LogoBrand: React.FC = () => {
+export const LogoBrand: React.FC = () => {
   return (
     <>
       <div className="desktop:text-[1.4rem]">Open&Free</div>
@@ -24,27 +24,29 @@ const LogoBrand: React.FC = () => {
   );
 };
 
-const HeaderSubScript: React.FC = () => {
+export const HeaderSubScript: React.FC<{
+  context: string;
+}> = ({ context }) => {
   return (
     <>
-      <div>You're almost there</div>
+      <div>{context}</div>
     </>
   );
 };
 
-const LeftSubHeaderNav: React.FC = () => {
+const LeftSubHeaderNav: React.FC<{ context: string }> = ({ context }) => {
   return (
     <>
       <div
         id=""
-        className="flex justify-between desktop:w-[300px] items-center"
+        className="flex justify-between desktop:w-[320px] items-center"
       >
         <>
           <LogoBrand />
         </>
 
         <>
-          <HeaderSubScript />
+          <HeaderSubScript context={context} />
         </>
       </div>
     </>

@@ -1,4 +1,7 @@
+"use client";
 import React from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const MainReleasePage = () => {
   return (
@@ -60,11 +63,38 @@ const RightMainRelasePage: React.FC = () => {
 };
 
 const LeftMainReleasePageIntro: React.FC = () => {
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const router = useRouter();
   return (
     <>
       <div
         id="do-u-know-this?"
-        className="flex flex-col justify-between desktop:h-[200px]"
+        className="flex flex-col justify-between desktop:h-[200px] cursor-pointer"
+        onMouseEnter={() => {
+          setIsHovered(true);
+        }}
+        onMouseLeave={() => {
+          setIsHovered(false);
+        }}
+        onClick={() => {
+          // using Hash Map to store current cookies key-value pairs
+          let cookieLookUp: any = {};
+          let filteredCookiePath: string[] = document.cookie.split("");
+
+          filteredCookiePath.map((each: string) => {
+            let keyValPair: string[] = each.split("=");
+            if (keyValPair[0][0] !== "_") {
+              cookieLookUp[keyValPair[0]] = keyValPair[1];
+            }
+          });
+
+          const isUserSignedIn: boolean = " firstname" in cookieLookUp;
+          if (isUserSignedIn) {
+            router.push("/explore");
+          } else {
+            router.push("/login");
+          }
+        }}
       >
         <>
           <div
@@ -90,7 +120,9 @@ const LeftMainReleasePageIntro: React.FC = () => {
             </>
 
             <>
-              <div>Back</div>
+              <div className={`${isHovered ? "underline" : "no-underline"}`}>
+                Back
+              </div>
             </>
           </div>
         </>

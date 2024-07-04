@@ -7,7 +7,7 @@ const page = () => {
     <div className="bg-pink-900 desktop:w-full text-pink-200 flex flex-col justify-evenly">
       <>
         <>
-          <HeaderNav />
+          <HeaderNav context="You're almost there" />
         </>
 
         <>
