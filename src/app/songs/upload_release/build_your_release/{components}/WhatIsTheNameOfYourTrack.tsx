@@ -1,4 +1,6 @@
+"use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const WhatIsTheNameOfYourTrack = () => {
   return (
@@ -19,7 +21,7 @@ const WhatIsTheNameOfYourTrack = () => {
       </>
 
       <>
-        <MoveNext />
+        <MoveNext dest="/songs/upload_release/build_your_release/audio_file_assign" />
       </>
     </div>
   );
@@ -94,7 +96,7 @@ const Rules: React.FC = () => {
   );
 };
 
-export const MoveNext: React.FC = () => {
+export const MoveNext: React.FC<{ dest: string }> = ({ dest }) => {
   return (
     <>
       <div
@@ -103,7 +105,7 @@ export const MoveNext: React.FC = () => {
         desktop:mt-[-10rem] desktop:ml-[-8rem]"
       >
         <>
-          <NextButton />
+          <NextButton dest={dest} />
         </>
 
         <>
@@ -114,7 +116,8 @@ export const MoveNext: React.FC = () => {
   );
 };
 
-export const NextButton: React.FC = () => {
+export const NextButton: React.FC<{ dest: string }> = ({ dest }) => {
+  const router = useRouter();
   return (
     <>
       <div
@@ -123,7 +126,7 @@ export const NextButton: React.FC = () => {
         desktop:rounded-[1.4rem] 
         font-bold"
       >
-        <button>Next</button>
+        <button onClick={() => router.push(dest)}>Next</button>
       </div>
     </>
   );

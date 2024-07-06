@@ -1,12 +1,21 @@
+"use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const BackNavigatorButton = () => {
+  const [isHovered, setIsHovered] = React.useState<boolean>(false);
+  const router = useRouter();
   return (
     <div
       id="go-back"
-      className="flex flex-start justify-between justify-items-start
+      className={`flex flex-start justify-between justify-items-start ${
+        isHovered ? "underline" : "no-underline"
+      } cursor-pointer
     desktop:w-[66px] 
-    desktop:ml-[-22rem]"
+    desktop:ml-[-22rem]`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => router.push("/songs/upload_release/build_your_release")}
     >
       <>
         <div>

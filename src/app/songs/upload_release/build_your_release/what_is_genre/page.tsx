@@ -1,11 +1,21 @@
 import React from "react";
+import HeaderNav from "../../{components}/Header-Nav";
+import Main from "./{components}/Main";
 
 const page = () => {
   return (
     <div
       id="what's genre"
       className="bg-amber-50 text-stone-500 desktop:font-[2rem]"
-    ></div>
+    >
+      <>
+        <HeaderNav context="Let's build you release" />
+      </>
+
+      <>
+        <Main />
+      </>
+    </div>
   );
 };
 

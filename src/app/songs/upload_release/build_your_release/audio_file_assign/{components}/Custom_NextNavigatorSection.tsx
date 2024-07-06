@@ -4,7 +4,7 @@ import {
   NextButtonOption,
 } from "../../{components}/WhatIsTheNameOfYourTrack";
 
-const Custom_NextNavigatorSection = () => {
+const Custom_NextNavigatorSection: React.FC<{ dest: string }> = ({ dest }) => {
   return (
     <div
       id="custom_next_nav_button"
@@ -14,7 +14,7 @@ const Custom_NextNavigatorSection = () => {
     "
     >
       <>
-        <NextButton />
+        <NextButton dest={dest} />
       </>
 
       <>

@@ -30,7 +30,7 @@ const Main = () => {
       {/* Next navigator button */}
       <>
         {/* <MoveNext /> */}
-        <Custom_NextNavigatorSection />
+        <Custom_NextNavigatorSection dest="" />
       </>
     </div>
   );
