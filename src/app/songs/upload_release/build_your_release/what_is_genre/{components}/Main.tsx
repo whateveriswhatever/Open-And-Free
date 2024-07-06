@@ -13,7 +13,7 @@ const Main = () => {
     >
       {/* Back navigator button */}
       <>
-        <BackNavigatorButton />
+        <BackNavigatorButton dest="/songs/upload_release/build_your_release/audio_file_assign" />
       </>
 
       {/* Heading */}

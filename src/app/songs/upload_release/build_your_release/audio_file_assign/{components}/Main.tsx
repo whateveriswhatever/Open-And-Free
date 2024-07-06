@@ -14,7 +14,7 @@ const Main = () => {
     >
       {/* Back navigator button */}
       <>
-        <BackNavigatorButton />
+        <BackNavigatorButton dest="/songs/upload_release/build_your_release" />
       </>
 
       {/* Highlight heading 2 */}
@@ -30,7 +30,7 @@ const Main = () => {
       {/* Next navigator button */}
       <>
         {/* <MoveNext /> */}
-        <Custom_NextNavigatorSection dest="" />
+        <Custom_NextNavigatorSection dest="/songs/upload_release/build_your_release/what_is_genre" />
       </>
     </div>
   );

@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-const BackNavigatorButton = () => {
+const BackNavigatorButton: React.FC<{ dest: string }> = ({ dest }) => {
   const [isHovered, setIsHovered] = React.useState<boolean>(false);
   const router = useRouter();
   return (
@@ -15,7 +15,7 @@ const BackNavigatorButton = () => {
     desktop:ml-[-22rem]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => router.push("/songs/upload_release/build_your_release")}
+      onClick={() => router.push(dest)}
     >
       <>
         <div>
