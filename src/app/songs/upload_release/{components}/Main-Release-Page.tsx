@@ -7,7 +7,7 @@ const MainReleasePage = () => {
   return (
     <div
       id="main-release-page"
-      className="desktop:w-full flex desktop:h-[881px] justify-center items-center"
+      className="desktop:w-full flex desktop:h-[881px] min-w-[1285px]:h-[900px] justify-center items-center"
     >
       <>
         <LeftMainRelasePage />

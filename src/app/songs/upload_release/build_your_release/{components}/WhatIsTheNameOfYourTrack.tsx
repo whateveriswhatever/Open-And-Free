@@ -27,7 +27,7 @@ const WhatIsTheNameOfYourTrack = () => {
 
 export default WhatIsTheNameOfYourTrack;
 
-const HighlightHeading: React.FC<{
+export const HighlightHeading: React.FC<{
   context: string;
 }> = ({ context }) => {
   return (
@@ -94,7 +94,7 @@ const Rules: React.FC = () => {
   );
 };
 
-const MoveNext: React.FC = () => {
+export const MoveNext: React.FC = () => {
   return (
     <>
       <div
@@ -114,7 +114,7 @@ const MoveNext: React.FC = () => {
   );
 };
 
-const NextButton: React.FC = () => {
+export const NextButton: React.FC = () => {
   return (
     <>
       <div
@@ -129,7 +129,7 @@ const NextButton: React.FC = () => {
   );
 };
 
-const NextButtonOption: React.FC = () => {
+export const NextButtonOption: React.FC = () => {
   return (
     <>
       <div
