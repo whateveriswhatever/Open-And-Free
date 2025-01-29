@@ -1,0 +1,2 @@
+The AddingNewSong React functional component is erected like a pop-up window inner the central position of the Explore page. Once, users click on the 
+upload button in the Explore page, the pop-up window will be manifested automatically and the rest of the background will be blur.
